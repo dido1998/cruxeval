@@ -53,7 +53,7 @@ class Vocab(object):
       for line in f:
           line = line.strip().split()
           curr_word = line[0]
-          _word2vec[curr_word] = np.array(line[1:], dtype=np.float64)
+          self._word2vec[curr_word] = np.array(line[1:], dtype=np.float64)
     self._count = 0 # keeps track of total number of words in the Vocab
 
     # [UNK], [PAD], [START] and [STOP] get the ids 0,1,2,3.
@@ -76,7 +76,7 @@ class Vocab(object):
           raise Exception('Duplicated word in vocabulary file: %s' % w)
         self._word_to_id[w] = self._count
         try:
-          self.embed_matrix[self._count, :] = _word2vec[w]
+          self.embed_matrix[self._count, :] = self._word2vec[w]
         except:
           self.embed_matrix[self._count, :] = np.random.uniform(-1, 1, 300)
         self._id_to_word[self._count] = w
