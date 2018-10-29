@@ -47,7 +47,7 @@ class Vocab(object):
     self._word_to_id = {}
     self._id_to_word = {}
     self._word2vec={}
-   with open(glove_location, 'r') as f:
+    with open(glove_location, 'r') as f:
       words = set()
       word_to_vec_map = {}
       for line in f:
