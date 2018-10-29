@@ -12,10 +12,10 @@ import pickle
 import random
 class instanceloader(Dataset):
 
-    def __init__(self, root_dir,vocab_dir,batch_size):
+    def __init__(self, root_dir,vocab_dir,glove_file,batch_size):
         with open(root_dir,'r') as f:
            data=pickle.load(f)
-        self.vocab_obj=Vocab(vocab_dir,0,'/home/aniket/pendrive/glove.txt')
+        self.vocab_obj=Vocab(vocab_dir,0,glove_file)
         
         length=len(self.data)
         self.actual_data=[]

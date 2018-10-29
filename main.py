@@ -64,6 +64,9 @@ parser.add_argument('--optimizer', type=str,  default='sgd',
                     help='optimizer to use (sgd, adam)')
 parser.add_argument('--when', nargs="+", type=int, default=[-1],
                     help='When (which epochs) to divide the learning rate by 10 - accepts multiple')
+parser.add_argument('--data_dir',type=str)
+parser.add_argument('--vocab_dir',type=str)
+parser.add_argument('--glove_file',type=str)
 args = parser.parse_args()
 args.tied = True
 
@@ -102,7 +105,7 @@ else:
 
 eval_batch_size = 10
 test_batch_size = 1
-train_data = instanceloader('/home/aniket/cnn-dailymail/unsupersum/individualpoints.pickle','/home/aniket/cnn-dailymail/unsupersum/vocab',args.batch_size)
+train_data = instanceloader(args.data_dir,args.vocab_dir,args.glove_file,args.batch_size)
 val_data = batchify(corpus.valid, eval_batch_size, args)
 test_data = batchify(corpus.test, test_batch_size, args)
 
