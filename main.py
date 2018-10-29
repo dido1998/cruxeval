@@ -94,20 +94,20 @@ def model_load(fn):
 
 import os
 import hashlib
-fn = 'corpus.{}.data'.format(hashlib.md5(args.data.encode()).hexdigest())
+"""fn = 'corpus.{}.data'.format(hashlib.md5(args.data.encode()).hexdigest())
 if os.path.exists(fn):
     print('Loading cached dataset...')
     corpus = torch.load(fn)
 else:
     print('Producing dataset...')
     corpus = data.Corpus(args.data)
-    torch.save(corpus, fn)
+    torch.save(corpus, fn)"""
 
 eval_batch_size = 10
 test_batch_size = 1
 train_data = instanceloader(args.data_dir,args.vocab_dir,args.glove_file,args.batch_size)
-val_data = batchify(corpus.valid, eval_batch_size, args)
-test_data = batchify(corpus.test, test_batch_size, args)
+#val_data = batchify(corpus.valid, eval_batch_size, args)
+#test_data = batchify(corpus.test, test_batch_size, args)
 
 ###############################################################################
 # Build the model
@@ -189,7 +189,7 @@ def train():
         lr2 = optimizer.param_groups[0]['lr']
         optimizer.param_groups[0]['lr'] = lr2 * seq_len / args.bptt
         model.train()
-        data, targets = train_data(i,0)
+        data, targets = train_data(i,1)
 
         # Starting each batch, we detach the hidden state from how it was previously produced.
         # If we didn't, the model would try backpropagating all the way to start of the dataset.
@@ -296,7 +296,7 @@ model_load(args.save)
 
 # Run on test data.
 #test_loss = evaluate(test_data, test_batch_size)
-print('=' * 89)
-print('| End of training | test loss {:5.2f} | test ppl {:8.2f} | test bpc {:8.3f}'.format(
-    test_loss, math.exp(test_loss), test_loss / math.log(2)))
-print('=' * 89)
+#print('=' * 89)
+#print('| End of training | test loss {:5.2f} | test ppl {:8.2f} | test bpc {:8.3f}'.format(
+#    test_loss, math.exp(test_loss), test_loss / math.log(2)))
+#print('=' * 89)

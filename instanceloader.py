@@ -68,6 +68,7 @@ class instanceloader(Dataset):
         if modelling==0:        
             cur_data=self.actual_data_batches[idx]
             para_index=torch.zeros(len(cur_data),self.max_para)
+
             summ_index=torch.zeros(len(cur_data),self.max_summ)
             for j,c in enumerate(cur_data):
                 para=c[0]
@@ -83,12 +84,13 @@ class instanceloader(Dataset):
             return para_index,summ_index,label
         else:   
             para_index=torch.zeros(len(cur_data),self.max_para)
+            target_index=torch.zeros(len(cur_data),self.max_para)
             #summ_index=torch.zeros(len(cur_data),self.max_summ)
             for j,c in enumerate(cur_data):
                 para=c[0]
                 
                 para=para.split()
-                for i ,p in enumerate(para):
-                    para_index[j,i]=self.vocab_obj.word2idx(p)
-                
-            return para_index
+                for i in range(len(para)-1):
+                    para_index[j,i]=self.vocab_obj.word2idx(para[i])
+                    target_index[j,i]=self.vocab_obj.word2idx(para[i+1])
+            return para_index,target_index
