@@ -12,6 +12,7 @@ def repackage_hidden(h):
 
 def batchify(data, bsz, args):
     # Work out how cleanly we can divide the dataset into bsz parts.
+    print(data)
     nbatch = data.size(0) // bsz
     # Trim off any extra elements that wouldn't cleanly fit (remainders).
     data = data.narrow(0, 0, nbatch * bsz)

@@ -4,7 +4,7 @@ import math
 import numpy as np
 import torch
 import torch.nn as nn
-
+from instanceloader import instanceloader
 import data
 import model
 
@@ -45,7 +45,7 @@ parser.add_argument('--seed', type=int, default=1111,
                     help='random seed')
 parser.add_argument('--nonmono', type=int, default=5,
                     help='random seed')
-parser.add_argument('--cuda', action='store_false',
+parser.add_argument('--cuda',default=False, action='store_false',
                     help='use CUDA')
 parser.add_argument('--log-interval', type=int, default=200, metavar='N',
                     help='report interval')
@@ -102,7 +102,7 @@ else:
 
 eval_batch_size = 10
 test_batch_size = 1
-train_data = batchify(corpus.train, args.batch_size, args)
+train_data = instanceloader('/home/aniket/cnn-dailymail/unsupersum/individualpoints.pickle','/home/aniket/cnn-dailymail/unsupersum/vocab',args.batch_size)
 val_data = batchify(corpus.valid, eval_batch_size, args)
 test_data = batchify(corpus.test, test_batch_size, args)
 
@@ -114,7 +114,7 @@ from splitcross import SplitCrossEntropyLoss
 criterion = None
 
 ntokens = len(corpus.dictionary)
-model = model.RNNModel(args.model, ntokens, args.emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
+model = model.RNNModel(train_data.vocab_obj,args.model, ntokens, args.emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
 ###
 if args.resume:
     print('Resuming model ...')
@@ -176,7 +176,7 @@ def train():
     ntokens = len(corpus.dictionary)
     hidden = model.init_hidden(args.batch_size)
     batch, i = 0, 0
-    while i < train_data.size(0) - 1 - 1:
+    while i < train_data.modelling_batch_len:
         bptt = args.bptt if np.random.random() < 0.95 else args.bptt / 2.
         # Prevent excessively small or negative sequence lengths
         seq_len = max(5, int(np.random.normal(bptt, 5)))
@@ -186,7 +186,7 @@ def train():
         lr2 = optimizer.param_groups[0]['lr']
         optimizer.param_groups[0]['lr'] = lr2 * seq_len / args.bptt
         model.train()
-        data, targets = get_batch(train_data, i, args, seq_len=seq_len)
+        data, targets = train_data(i,0)
 
         # Starting each batch, we detach the hidden state from how it was previously produced.
         # If we didn't, the model would try backpropagating all the way to start of the dataset.
@@ -259,7 +259,7 @@ try:
             for prm in model.parameters():
                 prm.data = tmp[prm].clone()
 
-        else:
+        """else:
             val_loss = evaluate(val_data, eval_batch_size)
             print('-' * 89)
             print('| end of epoch {:3d} | time: {:5.2f}s | valid loss {:5.2f} | '
@@ -282,7 +282,7 @@ try:
                 print('Dividing learning rate by 10')
                 optimizer.param_groups[0]['lr'] /= 10.
 
-            best_val_loss.append(val_loss)
+            best_val_loss.append(val_loss)"""
 
 except KeyboardInterrupt:
     print('-' * 89)
@@ -292,7 +292,7 @@ except KeyboardInterrupt:
 model_load(args.save)
 
 # Run on test data.
-test_loss = evaluate(test_data, test_batch_size)
+#test_loss = evaluate(test_data, test_batch_size)
 print('=' * 89)
 print('| End of training | test loss {:5.2f} | test ppl {:8.2f} | test bpc {:8.3f}'.format(
     test_loss, math.exp(test_loss), test_loss / math.log(2)))
