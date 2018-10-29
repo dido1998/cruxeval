@@ -20,7 +20,7 @@ import glob
 import random
 import struct
 import csv
-from tensorflow.core.example import example_pb2
+#from tensorflow.core.example import example_pb2
 import sys  
 
 # <s> and </s> are used in the data files to segment the abstracts into sentences. They don't receive vocab ids.
@@ -311,6 +311,4 @@ def show_abs_oovs(abstract, vocab, article_oovs):
   return out_str
 
 if __name__=='__main__':
-  with open('individualpoints.pickle','rb') as f:
-    data=pickle.load(f)
-  print(abstract2sents(data[5]))
+  example_generator('/home/aniket/cnn-dailymail/finished_files/chunked/train*',True)
