@@ -141,7 +141,7 @@ if not criterion:
         # WikiText-103
         splits = [2800, 20000, 76000]
     print('Using', splits)
-    criterion = SplitCrossEntropyLoss(args.emsize, splits=splits, verbose=False)
+    criterion = nn.CrossEntropyLoss(args.emsize, splits=splits, verbose=False)
 ###
 if args.cuda:
     model = model.cuda()
@@ -190,14 +190,16 @@ def train():
         optimizer.param_groups[0]['lr'] = lr2 * seq_len / args.bptt
         model.train()
         data, targets = train_data.getitem(i,1)
-
+        targets=torch.from_numpy().cuda()
         # Starting each batch, we detach the hidden state from how it was previously produced.
         # If we didn't, the model would try backpropagating all the way to start of the dataset.
         hidden = repackage_hidden(hidden)
         optimizer.zero_grad()
 
         output, hidden, rnn_hs, dropped_rnn_hs = model(data, hidden, return_h=True)
-        raw_loss = criterion(model.decoder.weight, model.decoder.bias, output, targets)
+        print(output.size())
+        print(targets.size())
+        raw_loss = criterion(output, targets)
 
         loss = raw_loss
         # Activiation Regularization
