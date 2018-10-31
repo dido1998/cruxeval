@@ -27,7 +27,8 @@ class instanceloader(Dataset):
         for i in data:
             cur_sent,cur_para=getdata.abstract2sents(i)
             self.modelling_data.append(cur_para)
-            self.NPI+=1
+            self.actual_data.append([cur_para,cur_sent,1])
+            """self.NPI+=1
             if len(cur_sent.split())>self.max_summ:
                 self.max_summ=len(cur_sent.split())
             if len(cur_para.split())>self.max_para:
@@ -50,7 +51,7 @@ class instanceloader(Dataset):
                         temp_r=random.randint(0,self.vocab_obj.size()[0]-1)
                         r_word=self.vocab_obj.id2word(temp_r)
                         r_sent+=' '+r_word
-                    self.actual_data.append([cur_para,r_sent,0])
+                    self.actual_data.append([cur_para,r_sent,0])"""
         self.actual_data_batches=[]
         self.modelling_batches=[]
         self.data_batch_len=int(len(self.actual_data)/batch_size)

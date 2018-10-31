@@ -74,6 +74,8 @@ class RNNModel(nn.Module):
     def forward(self, input, hidden, return_h=False):
         #emb = embedded_dropout(self.encoder, input, dropout=self.dropoute if self.training else 0)
         #emb = self.idrop(emb)
+        print(input.type())
+        input=input.long()
         emb=self.encoder(input)
         emb = self.lockdrop(emb, self.dropouti)
 
