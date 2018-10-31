@@ -25,7 +25,7 @@ class instanceloader(Dataset):
         self.NB=0
         self.modelling_data=[]
         for i in data:
-            cur_sent,cur_para=data.abstract2sents(i)
+            cur_sent,cur_para=getdata.abstract2sents(i)
             self.modelling_data.append(cur_para)
             self.NPI+=1
             if len(cur_sent.split())>max_summ:
@@ -39,7 +39,7 @@ class instanceloader(Dataset):
                     r=random.randint(0,length-1)
                     while r==i:
                         r=random.randint(length)
-                    r_sent,r_para=data.abstract2sents(r)
+                    r_sent,r_para=getdata.abstract2sents(r)
                     self.actual_data.append([cur_para,r_sent,0])
                 else:
                     r=random.randint(40,50)
