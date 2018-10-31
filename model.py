@@ -19,6 +19,9 @@ class RNNModel(nn.Module):
         self.hdrop = nn.Dropout(dropouth)
         self.drop = nn.Dropout(dropout)
         self.encoder = nn.Embedding(ntoken, ninp)
+        print(vocab_obj.embed_matrix.shape)
+        print(ntoken)
+        print(ninp)
         self.encoder.load_state_dict({'weight':vocab_obj.embed_matrix})
         assert rnn_type in ['LSTM', 'QRNN', 'GRU'], 'RNN type is not supported'
         if rnn_type == 'LSTM':
