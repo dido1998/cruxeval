@@ -39,7 +39,7 @@ class instanceloader(Dataset):
                     r=random.randint(0,length-1)
                     while r==i:
                         r=random.randint(length)
-                    r_sent,r_para=getdata.abstract2sents(r)
+                    r_sent,r_para=getdata.abstract2sents(data[r])
                     self.actual_data.append([cur_para,r_sent,0])
                 else:
                     r=random.randint(40,50)
