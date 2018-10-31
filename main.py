@@ -141,7 +141,7 @@ if not criterion:
         # WikiText-103
         splits = [2800, 20000, 76000]
     print('Using', splits)
-    criterion = nn.CrossEntropyLoss()
+    criterion = SplitCrossEntropyLoss(args.emsize, splits=splits, verbose=False)
 ###
 if args.cuda:
     model = model.cuda()
@@ -197,9 +197,8 @@ def train():
         optimizer.zero_grad()
 
         output, hidden, rnn_hs, dropped_rnn_hs = model(data, hidden, return_h=True)
-        print(output.size())
-        print(targets.size())
-        raw_loss = criterion(output, targets)
+        
+        raw_loss = criterion(model.decoder.weight, model.decoder.bias, output, targets)
 
         loss = raw_loss
         # Activiation Regularization
