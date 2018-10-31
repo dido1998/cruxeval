@@ -57,9 +57,9 @@ class instanceloader(Dataset):
         self.modelling_batch_len=int(len(self.modelling_data)/batch_size)
         for i in range(int(len(self.modelling_data)/batch_size)):
             self.modelling_batches.append(self.modelling_data[i*batch_size:i*batch_size+batch_size])
-        for i in range(int(len(actual_data)/batch_size)):
+        for i in range(int(len(self.actual_data)/batch_size)):
             self.actual_data_batches.append(self.actual_data[i*batch_size:i*batch_size+batch_size])
-        del data,length,self.modelling_data,self.actual_data
+        del data,length
         random.shuffle(self.actual_data)
     
     def get_embed_matrix(self):
