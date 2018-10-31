@@ -116,7 +116,7 @@ train_data = instanceloader(args.data_dir,args.vocab_dir,args.glove_file,args.ba
 from splitcross import SplitCrossEntropyLoss
 criterion = None
 
-ntokens = len(corpus.dictionary)
+ntokens = train_data.vocab_obj.size()
 model = model.RNNModel(train_data.vocab_obj,args.model, ntokens, args.emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
 ###
 if args.resume:
