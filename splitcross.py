@@ -142,8 +142,7 @@ class SplitCrossEntropyLoss(nn.Module):
             # For those targets in the head (idx == 0) we only need to return their loss
             if idx == 0:
                 softmaxed_head_res = softmaxed_all_head_res[running_offset:running_offset + len(split_hiddens[idx])]
-                print(softmaxed_head_res.type())
-                print(split_targets[idx].type())
+                split_targets[idx]=split_targets[idx].long().cuda()
                 entropy = -torch.gather(softmaxed_head_res, dim=1, index=split_targets[idx].view(-1, 1))
             # If the target is in one of the splits, the probability is the p(tombstone) * p(word within tombstone)
             else:
