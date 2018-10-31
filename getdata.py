@@ -270,7 +270,7 @@ def abstract2sents(abstract):
       break
     end_p = abstract.find(SENTENCE_END, start_p + 1)
     cur = end_p + len(SENTENCE_END)
-    print(start_p)
+    #print(start_p)
     sents.append(abstract[start_p+len(SENTENCE_START):end_p])
   final_sent=""
   for s in sents:
