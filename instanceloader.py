@@ -43,7 +43,7 @@ class instanceloader(Dataset):
                     self.actual_data.append([cur_para,r_sent,0])
                 else:
                     r=random.randint(40,50)
-                    if r>max_summ:
+                    if r>self.max_summ:
                         self.max_summ=r
                     r_sent=''
                     for k in range(r):
