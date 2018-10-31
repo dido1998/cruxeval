@@ -75,7 +75,7 @@ class RNNModel(nn.Module):
         #emb = embedded_dropout(self.encoder, input, dropout=self.dropoute if self.training else 0)
         #emb = self.idrop(emb)
         print(input.type())
-        input=input.long()
+        input=input.long().cuda()
         emb=self.encoder(input)
         emb = self.lockdrop(emb, self.dropouti)
 
