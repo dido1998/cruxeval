@@ -100,6 +100,8 @@ class SplitCrossEntropyLoss(nn.Module):
             # Are you in our split?
             tmp_mask = mask == idx
             split_targets.append(torch.masked_select(targets, tmp_mask))
+            print(hiddens.size())
+            print(tmp_mask.size())
             split_hiddens.append(hiddens.masked_select(tmp_mask.unsqueeze(1).expand_as(hiddens)).view(-1, hiddens.size(1)))
         return split_targets, split_hiddens
 
