@@ -176,7 +176,7 @@ def train():
     if args.model == 'QRNN': model.reset()
     total_loss = 0
     start_time = time.time()
-    ntokens = len(corpus.dictionary)
+    ntokens = train_data.vocab_obj.size()[0]
     hidden = model.init_hidden(args.batch_size)
     batch, i = 0, 0
     while i < train_data.modelling_batch_len:
