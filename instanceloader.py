@@ -64,7 +64,7 @@ class instanceloader(Dataset):
     
     def get_embed_matrix(self):
         return self.vocab_obj.embed_matrix
-    def __getitem__(self, idx,modelling):
+    def getitem(self, idx,modelling):
         if modelling==0:        
             cur_data=self.actual_data_batches[idx]
             para_index=torch.zeros(len(cur_data),self.max_para)
