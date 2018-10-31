@@ -84,9 +84,9 @@ class Vocab(object):
         if max_size != 0 and self._count >= max_size:
           print ("max_size of vocab was specified as %i; we now have %i words. Stopping reading." % (max_size, self._count))
           break
-    self.embed_matrix=np.zeros(len(self.embed_matrix),300)
-    for e,f in enumerate(embed_matrix_list):
-      self.embed_matrix[e,:]=embed_matrix_list[e]
+    self.embed_matrix=np.zeros(len(self.embed_matrix_list),300)
+    for e,f in enumerate(self.embed_matrix_list):
+      self.embed_matrix[e,:]=self.embed_matrix_list[e]
 
     print ("Finished constructing vocabulary of %i total words. Last word added: %s" % (self._count, self._id_to_word[self._count-1]))
 
