@@ -61,7 +61,7 @@ class Vocab(object):
       self._word_to_id[w] = self._count
       self._id_to_word[self._count] = w
       self._count += 1
-
+      self.embed_matrix_list=[]
     # Read the vocab file and add words up to max_size
     with open(vocab_file, 'r') as vocab_f:
       for line in vocab_f:
@@ -76,14 +76,17 @@ class Vocab(object):
           raise Exception('Duplicated word in vocabulary file: %s' % w)
         self._word_to_id[w] = self._count
         try:
-          self.embed_matrix[self._count, :] = self._word2vec[w]
+          self.embed_matrix_list.append(self._word2vec[w])
         except:
-          self.embed_matrix[self._count, :] = np.random.uniform(-1, 1, 300)
+          self.embed_matrix_list.append(np.random.uniform(-1, 1, 300))
         self._id_to_word[self._count] = w
         self._count += 1
         if max_size != 0 and self._count >= max_size:
           print ("max_size of vocab was specified as %i; we now have %i words. Stopping reading." % (max_size, self._count))
           break
+    self.embed_matrix=np.zeros(len(self.embed_matrix),300)
+    for e,f in enumerate(embed_matrix_list):
+      self.embed_matrix[e,:]=embed_matrix_list[e]
 
     print ("Finished constructing vocabulary of %i total words. Last word added: %s" % (self._count, self._id_to_word[self._count-1]))
 
