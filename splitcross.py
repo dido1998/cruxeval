@@ -113,7 +113,8 @@ class SplitCrossEntropyLoss(nn.Module):
 
         total_loss = None
         if len(hiddens.size()) > 2: hiddens = hiddens.view(-1, hiddens.size(2))
-
+        print(hiddens.size())
+        print(targets.size())
         split_targets, split_hiddens = self.split_on_targets(hiddens, targets)
 
         # First we perform the first softmax on the head vocabulary and the tombstones
