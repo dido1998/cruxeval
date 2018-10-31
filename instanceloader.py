@@ -17,7 +17,7 @@ class instanceloader(Dataset):
            data=pickle.load(f)
         self.vocab_obj=Vocab(vocab_dir,0,glove_file)
         
-        length=len(self.data)
+        length=len(data)
         self.actual_data=[]
         self.max_para=0
         self.max_summ=0
