@@ -141,7 +141,7 @@ if not criterion:
         # WikiText-103
         splits = [2800, 20000, 76000]
     print('Using', splits)
-    criterion = nn.CrossEntropyLoss(args.emsize, splits=splits, verbose=False)
+    criterion = nn.CrossEntropyLoss()
 ###
 if args.cuda:
     model = model.cuda()
