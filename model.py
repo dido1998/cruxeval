@@ -19,7 +19,7 @@ class RNNModel(nn.Module):
         self.hdrop = nn.Dropout(dropouth)
         self.drop = nn.Dropout(dropout)
         self.encoder = nn.Embedding(ntoken, ninp)
-        embed_matrix_tensor=torch.from_numpy(vocab_obj.embed_matrix)
+        embed_matrix_tensor=torch.from_numpy(vocab_obj.embed_matrix).cuda()
         self.encoder.load_state_dict({'weight':embed_matrix_tensor})
         assert rnn_type in ['LSTM', 'QRNN', 'GRU'], 'RNN type is not supported'
         if rnn_type == 'LSTM':

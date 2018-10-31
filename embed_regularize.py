@@ -14,7 +14,12 @@ def embedded_dropout(embed, words, dropout=0.1, scale=None):
   padding_idx = embed.padding_idx
   if padding_idx is None:
       padding_idx = -1
-
+  print(words.type())
+  print(masked_embed_weight.type())
+  print(embed.max_norm.type())
+  print(embed.norm_type.type())
+  print(embed.scale_grad_by_freq.type())
+  print(embed.sparse.type())
   X = torch.nn.functional.embedding(words, masked_embed_weight,
     padding_idx, embed.max_norm, embed.norm_type,
     embed.scale_grad_by_freq, embed.sparse
