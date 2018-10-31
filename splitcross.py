@@ -100,8 +100,6 @@ class SplitCrossEntropyLoss(nn.Module):
             # Are you in our split?
             tmp_mask = mask == idx
             split_targets.append(torch.masked_select(targets, tmp_mask))
-            print(hiddens.size())
-            print(tmp_mask)
             split_hiddens.append(hiddens.masked_select(tmp_mask.unsqueeze(1).expand_as(hiddens)).view(-1, hiddens.size(1)))
         return split_targets, split_hiddens
 
@@ -113,8 +111,7 @@ class SplitCrossEntropyLoss(nn.Module):
 
         total_loss = None
         if len(hiddens.size()) > 2: hiddens = hiddens.view(-1, hiddens.size(2))
-        print(hiddens.size())
-        print(targets.size())
+       
         targets=targets.view(-1)
         split_targets, split_hiddens = self.split_on_targets(hiddens, targets)
 
@@ -145,6 +142,8 @@ class SplitCrossEntropyLoss(nn.Module):
             # For those targets in the head (idx == 0) we only need to return their loss
             if idx == 0:
                 softmaxed_head_res = softmaxed_all_head_res[running_offset:running_offset + len(split_hiddens[idx])]
+                print(softmaxed_head_res.type())
+                print(split_targets[idx].type())
                 entropy = -torch.gather(softmaxed_head_res, dim=1, index=split_targets[idx].view(-1, 1))
             # If the target is in one of the splits, the probability is the p(tombstone) * p(word within tombstone)
             else:
