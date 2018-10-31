@@ -104,7 +104,7 @@ class Vocab(object):
 
   def size(self):
     """Returns the total size of the vocabulary"""
-    return self._count
+    return self.embed_matrix.shape[0],self.embed_matrix.shape[1]
   
   def write_metadata(self, fpath):
     """Writes metadata file for Tensorboard word embedding visualizer as described here:
