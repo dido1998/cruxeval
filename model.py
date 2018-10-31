@@ -75,7 +75,7 @@ class RNNModel(nn.Module):
         #emb = embedded_dropout(self.encoder, input, dropout=self.dropoute if self.training else 0)
         #emb = self.idrop(emb)
 
-        emb = self.lockdrop(emb, self.dropouti)
+        emb = self.lockdrop(input, self.dropouti)
 
         raw_output = emb
         new_hidden = []
