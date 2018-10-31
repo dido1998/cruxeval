@@ -83,6 +83,7 @@ class instanceloader(Dataset):
                     summ_index[j,i]=self.vocab_obj(s)
             return para_index,summ_index,label
         else:   
+            cur_data=self.modelling_batches[idx]
             para_index=torch.zeros(len(cur_data),self.max_para)
             target_index=torch.zeros(len(cur_data),self.max_para)
             #summ_index=torch.zeros(len(cur_data),self.max_summ)
