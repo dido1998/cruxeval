@@ -47,7 +47,7 @@ class instanceloader(Dataset):
                         self.max_summ=r
                     r_sent=''
                     for k in range(r):
-                        temp_r=random.randint(0,self.vocab_obj.size()-1)
+                        temp_r=random.randint(0,self.vocab_obj.size()[0]-1)
                         r_word=self.vocab_obj.id2word(temp_r)
                         r_sent+=' '+r_word
                     self.actual_data.append([cur_para,r_sent,0])

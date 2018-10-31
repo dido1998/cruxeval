@@ -117,7 +117,7 @@ class Vocab(object):
     with open(fpath, "w") as f:
       fieldnames = ['word']
       writer = csv.DictWriter(f, delimiter="\t", fieldnames=fieldnames)
-      for i in xrange(self.size()):
+      for i in xrange(self.size()[0]):
         writer.writerow({"word": self._id_to_word[i]})
 
 listofdata=[]
@@ -196,7 +196,7 @@ def article2ids(article_words, vocab):
       if w not in oovs: # Add to list of OOVs
         oovs.append(w)
       oov_num = oovs.index(w) # This is 0 for the first article OOV, 1 for the second article OOV...
-      ids.append(vocab.size() + oov_num) # This is e.g. 50000 for the first article OOV, 50001 for the second...
+      ids.append(vocab.size()[0] + oov_num) # This is e.g. 50000 for the first article OOV, 50001 for the second...
     else:
       ids.append(i)
   return ids, oovs
@@ -218,7 +218,7 @@ def abstract2ids(abstract_words, vocab, article_oovs):
     i = vocab.word2id(w)
     if i == unk_id: # If w is an OOV word
       if w in article_oovs: # If w is an in-article OOV
-        vocab_idx = vocab.size() + article_oovs.index(w) # Map to its temporary article OOV number
+        vocab_idx = vocab.size()[0] + article_oovs.index(w) # Map to its temporary article OOV number
         ids.append(vocab_idx)
       else: # If w is an out-of-article OOV
         ids.append(unk_id) # Map to the UNK token id
@@ -244,7 +244,7 @@ def outputids2words(id_list, vocab, article_oovs):
       w = vocab.id2word(i) # might be [UNK]
     except ValueError as e: # w is OOV
       assert article_oovs is not None, "Error: model produced a word ID that isn't in the vocabulary. This should not happen in baseline (no pointer-generator) mode"
-      article_oov_idx = i - vocab.size()
+      article_oov_idx = i - vocab.size()[0]
       try:
         w = article_oovs[article_oov_idx]
       except ValueError as e: # i doesn't correspond to an article oov
