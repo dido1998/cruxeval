@@ -20,7 +20,7 @@ class RNNModel(nn.Module):
         self.drop = nn.Dropout(dropout)
         self.encoder = nn.Embedding(ntoken, ninp)
         embed_matrix_tensor=torch.from_numpy(vocab_obj.embed_matrix)
-        self.encoder.load_state_dict({'weight':vocab_obj.embed_matrix_tensor})
+        self.encoder.load_state_dict({'weight':embed_matrix_tensor})
         assert rnn_type in ['LSTM', 'QRNN', 'GRU'], 'RNN type is not supported'
         if rnn_type == 'LSTM':
             self.rnns = [torch.nn.LSTM(ninp if l == 0 else nhid, nhid if l != nlayers - 1 else (ninp if tie_weights else nhid), 1, dropout=0) for l in range(nlayers)]
