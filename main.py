@@ -224,7 +224,7 @@ def train():
             total_loss = 0
             start_time = time.time()
             #torch.save(d.state_dict(),'model/dis')
-            torch.save([model, criterion, optimizer], args.save)
+            torch.save(model.state_dict(), args.save)
             ###
         batch += 1
         
