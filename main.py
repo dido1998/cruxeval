@@ -223,8 +223,8 @@ def train():
                 elapsed * 1000 / args.loginterval, cur_loss, math.exp(cur_loss), cur_loss / math.log(2)))
             total_loss = 0
             start_time = time.time()
-            with open(args.save, 'wb') as f:
-                torch.save([model, criterion, optimizer], f)
+            #torch.save(d.state_dict(),'model/dis')
+            torch.save([model, criterion, optimizer], args.save)
             ###
         batch += 1
         
