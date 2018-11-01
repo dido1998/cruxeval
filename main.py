@@ -6,6 +6,7 @@ import torch
 import torch.nn as nn
 from instanceloader import instanceloader
 import data
+from tqdm import tqdm
 import model
 
 from utils import batchify, get_batch, repackage_hidden
@@ -179,7 +180,7 @@ def train():
     ntokens = train_data.vocab_obj.size()[0]
     hidden = model.init_hidden(args.batch_size)
     batch, i = 0, 0
-    while i < train_data.modelling_batch_len:
+    for  i in  tqdm(range(train_data.modelling_batch_len)):
         bptt = args.bptt if np.random.random() < 0.95 else args.bptt / 2.
         # Prevent excessively small or negative sequence lengths
         seq_len = max(5, int(np.random.normal(bptt, 5)))
