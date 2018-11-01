@@ -48,7 +48,7 @@ parser.add_argument('--nonmono', type=int, default=5,
                     help='random seed')
 parser.add_argument('--cuda',default=True, action='store_false',
                     help='use CUDA')
-parser.add_argument('--log-interval', type=int, default=200, metavar='N',
+parser.add_argument('--loginterval', type=int, default=200, metavar='N',
                     help='report interval')
 randomhash = ''.join(str(time.time()).split('.'))
 parser.add_argument('--save', type=str,  default='/content/drive/My\ Drive/models/',
@@ -214,13 +214,13 @@ def train():
 
         total_loss += raw_loss.data
         optimizer.param_groups[0]['lr'] = lr2
-        if batch % args.log_interval == 0 and batch > 0:
-            cur_loss = total_loss.item() / args.log_interval
+        if batch % args.loginterval == 0 and batch > 0:
+            cur_loss = total_loss.item() / args.loginterval
             elapsed = time.time() - start_time
             print('| epoch {:3d} | {:5f}/{:5f} batches  | '
                     'loss {:5.2f} | ppl {:8.2f} | bpc {:8.3f}'.format(
                 epoch, batch,
-                elapsed * 1000 / args.log_interval, cur_loss, math.exp(cur_loss), cur_loss / math.log(2)))
+                elapsed * 1000 / args.loginterval, cur_loss, math.exp(cur_loss), cur_loss / math.log(2)))
             total_loss = 0
             start_time = time.time()
             model_save(args.save)
