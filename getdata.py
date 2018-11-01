@@ -57,11 +57,13 @@ class Vocab(object):
     self._count = 0 # keeps track of total number of words in the Vocab
 
     # [UNK], [PAD], [START] and [STOP] get the ids 0,1,2,3.
+    self.embed_matrix_list=[]
     for w in [UNKNOWN_TOKEN, PAD_TOKEN, START_DECODING, STOP_DECODING]:
       self._word_to_id[w] = self._count
       self._id_to_word[self._count] = w
+      self.embed_matrix_list.append(np.random.uniform(-1,1,300))
       self._count += 1
-      self.embed_matrix_list=[]
+    
     # Read the vocab file and add words up to max_size
     with open(vocab_file, 'r') as vocab_f:
       for line in vocab_f:

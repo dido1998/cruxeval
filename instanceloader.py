@@ -1,12 +1,11 @@
 import os
 import torch
-from skimage import io, transform
 import numpy as np
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms, utils
 import getdata
 from getdata import Vocab
-
+from tqdm import tqdm
 import cv2
 import pickle
 import random
@@ -89,11 +88,25 @@ class instanceloader(Dataset):
             para_index=torch.zeros(len(cur_data),self.max_para)
             target_index=torch.zeros(len(cur_data),self.max_para)
             #summ_index=torch.zeros(len(cur_data),self.max_summ)
+            #print(len(cur_data))
             for j,c in enumerate(cur_data):
-                para=c[0]
+                #print(j)
+            
+                para=c
                 
                 para=para.split()
+                #print(len(para))
                 for i in range(len(para)-1):
-                    para_index[j,i]=self.vocab_obj.word2idx(para[i])
-                    target_index[j,i]=self.vocab_obj.word2idx(para[i+1])
+                    #print(self.vocab_obj.word2id(para[i]))
+                    para_index[j,i]=self.vocab_obj.word2id(para[i])
+                    target_index[j,i]=self.vocab_obj.word2id(para[i+1])
+                
             return para_index,target_index
+
+
+
+if __name__=='__main__':
+    data=instanceloader('/home/aniket/cnn-dailymail/unsupersum/individualpoints.pickle','/home/aniket/cnn-dailymail/unsupersum/vocab','/home/aniket/pendrive/glove.txt',8)
+    
+    print(data.getitem(6,1))
+    print('----------------------------------------')
