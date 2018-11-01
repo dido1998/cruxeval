@@ -194,11 +194,11 @@ def train():
         targets=targets.cuda()
         # Starting each batch, we detach the hidden state from how it was previously produced.
         # If we didn't, the model would try backpropagating all the way to start of the dataset.
-        hidden = repackage_hidden(hidden)
+        hidden = model.init_hidden(args.batch_size)
         optimizer.zero_grad()
 
         output, hidden, rnn_hs, dropped_rnn_hs = model(data, hidden, return_h=True)
-        
+        print(output.size())
         raw_loss = criterion(model.decoder.weight, model.decoder.bias, output, targets)
 
         loss = raw_loss
@@ -225,8 +225,8 @@ def train():
             start_time = time.time()
             model_save(args.save)
             ###
-            batch += 1
-            i += seq_len
+        batch += 1
+        
 
 # Loop over epochs.
 lr = args.lr
