@@ -91,16 +91,17 @@ class instanceloader(Dataset):
             #print(len(cur_data))
             for j,c in enumerate(cur_data):
                 #print(j)
-            
-                para=c
-                
-                para=para.split()
-                #print(len(para))
-                for i in range(len(para)-1):
-                    #print(self.vocab_obj.word2id(para[i]))
-                    para_index[j,i]=self.vocab_obj.word2id(para[i])
-                    target_index[j,i]=self.vocab_obj.word2id(para[i+1])
-                
+                try:
+                    para=c
+                    
+                    para=para.split()
+                    #print(len(para))
+                    for i in range(len(para)-1):
+                        #print(self.vocab_obj.word2id(para[i]))
+                        para_index[j,i]=self.vocab_obj.word2id(para[i])
+                        target_index[j,i]=self.vocab_obj.word2id(para[i+1])
+                except:
+                    pass
             return para_index,target_index
 
 
