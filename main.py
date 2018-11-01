@@ -214,19 +214,19 @@ def train():
 
         total_loss += raw_loss.data
         optimizer.param_groups[0]['lr'] = lr2
-        #if batch % args.log_interval == 0 and batch > 0:
-        cur_loss = total_loss.item() / args.log_interval
-        elapsed = time.time() - start_time
-        print('| epoch {:3d} | {:5f}/{:5f} batches  | '
-                'loss {:5.2f} | ppl {:8.2f} | bpc {:8.3f}'.format(
-            epoch, batch,
-            elapsed * 1000 / args.log_interval, cur_loss, math.exp(cur_loss), cur_loss / math.log(2)))
-        total_loss = 0
-        start_time = time.time()
-        model_save(args.save)
-        ###
-        batch += 1
-        i += seq_len
+        if batch % args.log_interval == 0 and batch > 0:
+            cur_loss = total_loss.item() / args.log_interval
+            elapsed = time.time() - start_time
+            print('| epoch {:3d} | {:5f}/{:5f} batches  | '
+                    'loss {:5.2f} | ppl {:8.2f} | bpc {:8.3f}'.format(
+                epoch, batch,
+                elapsed * 1000 / args.log_interval, cur_loss, math.exp(cur_loss), cur_loss / math.log(2)))
+            total_loss = 0
+            start_time = time.time()
+            model_save(args.save)
+            ###
+            batch += 1
+            i += seq_len
 
 # Loop over epochs.
 lr = args.lr
