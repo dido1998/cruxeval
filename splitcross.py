@@ -113,6 +113,7 @@ class SplitCrossEntropyLoss(nn.Module):
         if len(hiddens.size()) > 2: hiddens = hiddens.view(-1, hiddens.size(2))
        
         targets=targets.transpose(1,0)
+        print(targets.size())
         targets=targets.view(-1)
         split_targets, split_hiddens = self.split_on_targets(hiddens, targets)
 
