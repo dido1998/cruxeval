@@ -67,6 +67,7 @@ class SplitCrossEntropyLoss(nn.Module):
 
         if len(results) > 1:
             return torch.cat(results, dim=1)
+        #print(results[0])
         return results[0]
 
     def split_on_targets(self, hiddens, targets):
@@ -165,6 +166,7 @@ class SplitCrossEntropyLoss(nn.Module):
                 indices = (split_targets[idx] - self.splits[idx]).view(-1, 1)
                 # Warning: if you don't squeeze, you get an N x 1 return, which acts oddly with broadcasting
                 indices=indices.long().cuda()
+                print(indices.size())
                 tail_entropy = torch.gather(torch.nn.functional.log_softmax(tail_res, dim=-1), dim=1, index=indices).squeeze()
                 entropy = -(head_entropy + tail_entropy)
             ###
