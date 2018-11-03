@@ -178,7 +178,7 @@ class SplitCrossEntropyLoss(nn.Module):
         #print('hello')
         if r%5==0:
             print(para)
-        return (total_loss / len(targets)).type_as(weight),para
+        return (total_loss / len(targets)).type_as(weight)
 
 
 if __name__ == '__main__':
