@@ -169,7 +169,7 @@ class SplitCrossEntropyLoss(nn.Module):
                 # Warning: if you don't squeeze, you get an N x 1 return, which acts oddly with broadcasting
                 indices=indices.long().cuda()
                 for i in range(indices.size()[0]):
-                    para+=self.vocab.id2word(indices[i][0])+" "
+                    para+=self.vocab.id2word(indices[i][0].item())+" "
                 tail_entropy = torch.gather(torch.nn.functional.log_softmax(tail_res, dim=-1), dim=1, index=indices).squeeze()
                 entropy = -(head_entropy + tail_entropy)
             ###
