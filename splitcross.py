@@ -8,7 +8,7 @@ import numpy as np
 
 class SplitCrossEntropyLoss(nn.Module):
     r'''SplitCrossEntropyLoss calculates an approximate softmax'''
-    def __init__(self, hidden_size, splits, verbose=False):
+    def __init__(self, hidden_size,vocab, splits, verbose=False):
         # We assume splits is [0, split1, split2, N] where N >= |V|
         # For example, a vocab of 1000 words may have splits [0] + [100, 500] + [inf]
         super(SplitCrossEntropyLoss, self).__init__()
@@ -17,6 +17,7 @@ class SplitCrossEntropyLoss(nn.Module):
         self.nsplits = len(self.splits) - 1
         self.stats = defaultdict(list)
         self.verbose = verbose
+        self.vocab=vocab
         # Each of the splits that aren't in the head require a pretend token, we'll call them tombstones
         # The probability given to this tombstone is the probability of selecting an item from the represented split
         if self.nsplits > 1:
@@ -138,6 +139,7 @@ class SplitCrossEntropyLoss(nn.Module):
             self.stats[0].append(combo.size()[0] * head_weight.size()[0])
 
         running_offset = 0
+        para=''
         for idx in range(self.nsplits):
             # If there are no targets for this split, continue
             if len(split_targets[idx]) == 0: continue
@@ -166,14 +168,15 @@ class SplitCrossEntropyLoss(nn.Module):
                 indices = (split_targets[idx] - self.splits[idx]).view(-1, 1)
                 # Warning: if you don't squeeze, you get an N x 1 return, which acts oddly with broadcasting
                 indices=indices.long().cuda()
-                print(indices)
+                for i in range(indices.size()[0]):
+                    para+=self.vocab.id2word(indices[i][0])+" "
                 tail_entropy = torch.gather(torch.nn.functional.log_softmax(tail_res, dim=-1), dim=1, index=indices).squeeze()
                 entropy = -(head_entropy + tail_entropy)
             ###
             running_offset += len(split_hiddens[idx])
             total_loss = entropy.float().sum() if total_loss is None else total_loss + entropy.float().sum()
 
-        return (total_loss / len(targets)).type_as(weight)
+        return (total_loss / len(targets)).type_as(weight),para
 
 
 if __name__ == '__main__':

@@ -142,7 +142,7 @@ if not criterion:
         # WikiText-103
         splits = [2800, 20000, 76000]
     print('Using', splits)
-    criterion = SplitCrossEntropyLoss(args.emsize, splits=splits, verbose=False)
+    criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
 ###
 if args.cuda:
     model = model.cuda()
@@ -199,7 +199,7 @@ def train():
 
         output, hidden, rnn_hs, dropped_rnn_hs = model(data, hidden, return_h=True)
         #print(output.size())
-        raw_loss = criterion(model.decoder.weight, model.decoder.bias, output, targets)
+        raw_loss,para = criterion(model.decoder.weight, model.decoder.bias, output, targets)
 
         loss = raw_loss
         # Activiation Regularization
@@ -224,6 +224,9 @@ def train():
                 elapsed * 1000 / args.loginterval, cur_loss, math.exp(cur_loss), cur_loss / math.log(2)))
             total_loss = 0
             start_time = time.time()
+            print('instance:')
+            print(para)
+            print('------------------')
             #torch.save(d.state_dict(),'model/dis')
             torch.save([model, criterion, optimizer], args.save)
             ###
