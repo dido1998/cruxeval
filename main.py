@@ -217,7 +217,9 @@ def train():
         if batch % args.loginterval == 0 and batch > 0:
             cur_loss = total_loss.item() / args.loginterval
             elapsed = time.time() - start_time
-            torch.save([model, criterion, optimizer], '/content/drive/My Drive/lngmodel')
+            print("here")
+            torch.save(model.state_dict(), '/content/drive/My Drive/lngmodel')
+            print("here after")
             print('| epoch {:3d} | {:5f}/{:5f} batches  | '
                     'loss {:5.2f} | ppl {:8.2f} | bpc {:8.3f}'.format(
                 epoch, batch,
@@ -226,7 +228,7 @@ def train():
             start_time = time.time()
            
             #torch.save(d.state_dict(),'model/dis')
-            torch.save([model, criterion, optimizer], args.save)
+            #torch.save([model, criterion, optimizer], args.save)
             ###
         batch += 1
         
