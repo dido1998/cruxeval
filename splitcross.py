@@ -168,16 +168,17 @@ class SplitCrossEntropyLoss(nn.Module):
                 indices = (split_targets[idx] - self.splits[idx]).view(-1, 1)
                 # Warning: if you don't squeeze, you get an N x 1 return, which acts oddly with broadcasting
                 indices=indices.long().cuda()
-                for i in range(30):
-                    para+=self.vocab.id2word(indices[i][0].item())+" "
+                print(head_entropy)
+                #for i in range(30):
+                #    para+=self.vocab.id2word(indices[i][0].item())+" "
                 tail_entropy = torch.gather(torch.nn.functional.log_softmax(tail_res, dim=-1), dim=1, index=indices).squeeze()
                 entropy = -(head_entropy + tail_entropy)
             ###
             running_offset += len(split_hiddens[idx])
             total_loss = entropy.float().sum() if total_loss is None else total_loss + entropy.float().sum()
         #print('hello')
-        if r%5==0:
-            print(para)
+        #if r%1000==0:
+        #    print(para)
         return (total_loss / len(targets)).type_as(weight)
 
 
