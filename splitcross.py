@@ -160,7 +160,7 @@ class SplitCrossEntropyLoss(nn.Module):
 
                 # Calculate the softmax for the words in the tombstone
                 tail_res = self.logprob(weight, bias, split_hiddens[idx], splits=[idx], softmaxed_head_res=softmaxed_head_res)
-
+                print(tail_res.size())
                 # Then we calculate p(tombstone) * p(word in tombstone)
                 # Adding is equivalent to multiplication in log space
                 head_entropy = softmaxed_head_res[:, -idx]
@@ -176,7 +176,7 @@ class SplitCrossEntropyLoss(nn.Module):
             ###
             running_offset += len(split_hiddens[idx])
             total_loss = entropy.float().sum() if total_loss is None else total_loss + entropy.float().sum()
-        print(softmaxed_all_head_res.size())
+        #print(softmaxed_all_head_res.size())
         #print('hello')
         #if r%1000==0:
         #    print(para)
