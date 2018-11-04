@@ -145,7 +145,7 @@ if not criterion:
     cutoff=[]
     for k in range(199):
         cutoff.append((k+1)*1000)
-    criterion=nn.AdaptiveLogSoftmaxWithLoss(512,ntokens,cutoff)
+    criterion=nn.AdaptiveLogSoftmaxWithLoss(512,ntokens,[(k+1)*1000 for k in range(199)])
     #criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
 ###
 if args.cuda:
