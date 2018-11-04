@@ -69,7 +69,7 @@ parser.add_argument('--data_dir',type=str)
 parser.add_argument('--vocab_dir',type=str)
 parser.add_argument('--glove_file',type=str)
 args = parser.parse_args()
-args.tied = True
+args.tied = False
 
 # Set the random seed manually for reproducibility.
 np.random.seed(args.seed)
@@ -181,14 +181,14 @@ def train():
     hidden = model.init_hidden(args.batch_size)
     batch, i = 0, 0
     for  i in  tqdm(range(train_data.modelling_batch_len)):
-        bptt = args.bptt if np.random.random() < 0.95 else args.bptt / 2.
+        #bptt = args.bptt if np.random.random() < 0.95 else args.bptt / 2.
         # Prevent excessively small or negative sequence lengths
-        seq_len = max(5, int(np.random.normal(bptt, 5)))
+        #seq_len = max(5, int(np.random.normal(bptt, 5)))
         # There's a very small chance that it could select a very long sequence length resulting in OOM
         # seq_len = min(seq_len, args.bptt + 10)
 
         lr2 = optimizer.param_groups[0]['lr']
-        optimizer.param_groups[0]['lr'] = lr2 * seq_len / args.bptt
+        optimizer.param_groups[0]['lr'] = lr2 
         model.train()
         data, targets = train_data.getitem(i,1)
         targets=targets.cuda()
