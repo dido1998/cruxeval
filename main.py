@@ -206,7 +206,7 @@ def train():
 
         output, hidden, rnn_hs, dropped_rnn_hs = model(data, hidden, return_h=True)
         #print(output.size())
-        output = output.view(-1, hiddens.size(2))
+        output = output.view(-1, output.size(2))
        
         targets=targets.transpose(1,0)
         #print(targets.size())
