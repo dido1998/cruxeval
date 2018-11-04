@@ -224,7 +224,7 @@ def train():
         if args.clip: torch.nn.utils.clip_grad_norm_(params, args.clip)
         optimizer.step()
 
-        total_loss += raw_loss.data
+        total_loss += raw_loss[1].data
         optimizer.param_groups[0]['lr'] = lr2
         if batch % args.loginterval == 0 and batch > 0:
             cur_loss = total_loss.item() / args.loginterval
