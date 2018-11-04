@@ -9,6 +9,7 @@ import argparse
 
 import torch
 from torch.autograd import Variable
+from getdata import Vocab
 
 import data
 import model
@@ -47,7 +48,7 @@ parser.add_argument('--wdrop', type=float, default=0.5,
 
 parser.add_argument('--temperature', type=float, default=1.0,
                     help='temperature - higher will increase diversity')
-parser.add_argument('--log-interval', type=int, default=100,
+parser.add_argument('--log_interval', type=int, default=100,
                     help='reporting interval')
 parser.add_argument('--vocab_dir',type=str)
 parser.add_argument('--glove_file',type=str)
@@ -96,5 +97,5 @@ with open(args.outf, 'w') as outf:
 
         outf.write(word + ('\n' if i % 20 == 19 else ' '))
 
-        if i % args.log_interval == 0:
-            print('| Generated {}/{} words'.format(i, args.words))
+        
+    print('| Generated {}/{} words'.format(i, args.words))
