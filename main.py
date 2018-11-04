@@ -7,6 +7,7 @@ import torch.nn as nn
 from instanceloader import instanceloader
 import data
 from tqdm import tqdm
+from adaptive import AdaptiveLogSoftmaxWithLoss
 import model
 
 from utils import batchify, get_batch, repackage_hidden
@@ -145,7 +146,7 @@ if not criterion:
     cutoff=[]
     for k in range(199):
         cutoff.append((k+1)*1000)
-    criterion=nn.AdaptiveLogSoftmaxWithLoss(512,ntokens,[(k+1)*1000 for k in range(199)])
+    criterion=AdaptiveLogSoftmaxWithLoss(512,ntokens,[(k+1)*1000 for k in range(199)])
     #criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
 ###
 if args.cuda:
