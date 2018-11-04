@@ -66,7 +66,7 @@ if args.temperature < 1e-3:
     parser.error("--temperature has to be greater or equal 1e-3")
 
 #with open(args.checkpoint, 'rb') as f:
-vocab_obj=Vocab(vocab_dir,0,glove_file)
+vocab_obj=Vocab(args.vocab_dir,0,args.glove_file)
 ntokens,emsize = vocab_obj.size()
 model = model.RNNModel(vocab_obj,args.model, ntokens, emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
 
