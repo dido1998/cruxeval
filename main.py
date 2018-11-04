@@ -143,8 +143,8 @@ if not criterion:
         splits = [2800, 20000, 76000]
     print('Using', splits)
     cutoff=[0]
-    for k in xrange(1,199):
-        cutoff.append(k*1000)
+    for k in range(199):
+        cutoff.append((k+1)*1000)
     criterion=AdaptiveLogSoftmaxWithLoss(512,ntokens,cutoff)
     #criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
 ###
@@ -212,7 +212,7 @@ def train():
         #print(targets.size())
         targets=targets.contiguous().view(-1)
         raw_loss = criterion(output,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
-        
+
         loss = raw_loss[1]
         # Activiation Regularization
         if args.alpha: loss = loss + sum(args.alpha * dropped_rnn_h.pow(2).mean() for dropped_rnn_h in dropped_rnn_hs[-1:])
