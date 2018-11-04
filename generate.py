@@ -95,7 +95,7 @@ with open(args.outf, 'w') as outf:
         word_idx = torch.multinomial(word_weights, 1)[0]
         input.data.fill_(word_idx)
         print(word_idx)
-        word = vocab_obj.id2word(word_idx)
+        word = vocab_obj.id2word(word_idx.item())
 
         outf.write(word + ('\n' if i % 20 == 19 else ' '))
 
