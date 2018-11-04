@@ -143,10 +143,9 @@ if not criterion:
         # WikiText-103
         splits = [2800, 20000, 76000]
     print('Using', splits)
-    cutoff=[]
-    for k in range(199):
-        cutoff.append((k+1)*1000)
-    criterion=AdaptiveLogSoftmaxWithLoss(512,ntokens,[(k+1)*1000 for k in range(199)])
+    
+    
+    criterion=AdaptiveLogSoftmaxWithLoss(512,ntokens,splits)
     #criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
 ###
 if args.cuda:
