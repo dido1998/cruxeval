@@ -142,7 +142,7 @@ if not criterion:
         # WikiText-103
         splits = [2800, 20000, 76000]
     print('Using', splits)
-    cutoff=[0]
+    cutoff=[]
     for k in range(199):
         cutoff.append((k+1)*1000)
     criterion=nn.AdaptiveLogSoftmaxWithLoss(512,ntokens,cutoff)
