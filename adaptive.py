@@ -2,10 +2,10 @@ from collections import namedtuple
 
 import torch
 
-from torch.nn import Sequential, ModuleList, Linear
+from torch.nn import Sequential, ModuleList
 from torch.nn import Module
 from torch.nn.functional import log_softmax
-
+from linear import Linear
 
 _ASMoutput = namedtuple('ASMoutput', ['output', 'loss'])
 
