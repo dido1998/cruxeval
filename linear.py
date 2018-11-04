@@ -3,7 +3,7 @@ import math
 import torch
 from torch.nn.parameter import Parameter
 from torch.nn import functional as F
-from torch.nn.module import Module
+from torch.nn import Module
 
 
 
