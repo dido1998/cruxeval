@@ -195,6 +195,7 @@ class AdaptiveLogSoftmaxWithLoss(Module):
 
         head_output = self.head(input)
         head_logprob = log_softmax(head_output, dim=1)
+        gather_inds=gather_inds.long().cuda()
         output += head_logprob.gather(1, gather_inds.unsqueeze(1)).squeeze()
         loss = (-output).mean()
 
