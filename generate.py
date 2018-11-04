@@ -54,6 +54,7 @@ parser.add_argument('--vocab_dir',type=str)
 parser.add_argument('--glove_file',type=str)
 args = parser.parse_args()
 args.tied=True
+args.cuda=True
 # Set the random seed manually for reproducibility.
 torch.manual_seed(args.seed)
 if torch.cuda.is_available():
@@ -81,7 +82,7 @@ else:
     model.cpu()
 
 #corpus = data.Corpus(args.data)
-ntokens = len(corpus.dictionary)
+#ntokens = len(corpus.dictionary)
 hidden = model.init_hidden(1)
 input = Variable(torch.rand(1, 1).mul(ntokens).long(), volatile=True)
 if args.cuda:
