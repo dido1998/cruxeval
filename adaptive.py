@@ -180,6 +180,7 @@ class AdaptiveLogSoftmaxWithLoss(Module):
                 gather_inds.index_fill_(0, row_indices, cluster_index)
 
                 cluster_logprob = log_softmax(cluster_output, dim=1)
+                relative_target=relative_target.long().cuda()
                 local_logprob = cluster_logprob.gather(1, relative_target.unsqueeze(1))
                 output.index_copy_(0, row_indices, local_logprob.squeeze(1))
 
