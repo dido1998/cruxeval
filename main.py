@@ -142,7 +142,11 @@ if not criterion:
         # WikiText-103
         splits = [2800, 20000, 76000]
     print('Using', splits)
-    criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
+    cutoff=[0]
+    for k in xrange(1,199):
+        cutoff.append(k*1000)
+    criterion=AdaptiveLogSoftmaxWithLoss(512,ntokens,cutoff)
+    #criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
 ###
 if args.cuda:
     model = model.cuda()
@@ -180,6 +184,9 @@ def train():
     ntokens = train_data.vocab_obj.size()[0]
     hidden = model.init_hidden(args.batch_size)
     batch, i = 0, 0
+
+
+
     for  i in  tqdm(range(train_data.modelling_batch_len)):
         #bptt = args.bptt if np.random.random() < 0.95 else args.bptt / 2.
         # Prevent excessively small or negative sequence lengths
@@ -199,9 +206,14 @@ def train():
 
         output, hidden, rnn_hs, dropped_rnn_hs = model(data, hidden, return_h=True)
         #print(output.size())
-        raw_loss = criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
-
-        loss = raw_loss
+        output = output.view(-1, hiddens.size(2))
+       
+        targets=targets.transpose(1,0)
+        #print(targets.size())
+        targets=targets.contiguous().view(-1)
+        raw_loss = criterion(output,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
+        
+        loss = raw_loss[1]
         # Activiation Regularization
         if args.alpha: loss = loss + sum(args.alpha * dropped_rnn_h.pow(2).mean() for dropped_rnn_h in dropped_rnn_hs[-1:])
         # Temporal Activation Regularization (slowness)
