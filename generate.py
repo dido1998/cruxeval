@@ -92,15 +92,15 @@ with open(args.outf, 'w') as outf:
     for i in range(args.words):
         output, hidden = model(input, hidden)
         print(output.size())
-        print(hidden.size())
+        #print(hidden)
         print('---------------------------')
         word_weights = output.squeeze().data.div(args.temperature).exp().cpu()
         word_idx = torch.multinomial(word_weights, 1)[0]
         input.data.fill_(word_idx)
         #print(word_idx)
         word = vocab_obj.id2word(word_idx.item())
-
+        print(word)
         outf.write(word + ('\n' if i % 20 == 19 else ' '))
 
         
-    print('| Generated {}/{} words'.format(i, args.words))
+    #print('| Generated {}/{} words'.format(i, args.words))
