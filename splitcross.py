@@ -102,7 +102,7 @@ class SplitCrossEntropyLoss(nn.Module):
             # Are you in our split?
             tmp_mask = mask == idx
             split_targets.append(torch.masked_select(targets, tmp_mask))
-            split_hiddens.append(hiddens.masked_select(hiddens,tmp_mask))
+            split_hiddens.append(hiddens.masked_select(tmp_mask.unsqueeze(1).expand_as(hiddens)).view(-1, hiddens.size(1)))
         return split_targets, split_hiddens
 
     def forward(self, weight, bias, hiddens, targets,r, verbose=False):
@@ -160,7 +160,7 @@ class SplitCrossEntropyLoss(nn.Module):
 
                 # Calculate the softmax for the words in the tombstone
                 tail_res = self.logprob(weight, bias, split_hiddens[idx], splits=[idx], softmaxed_head_res=softmaxed_head_res)
-                #print(tail_res)
+
                 # Then we calculate p(tombstone) * p(word in tombstone)
                 # Adding is equivalent to multiplication in log space
                 head_entropy = softmaxed_head_res[:, -idx]
