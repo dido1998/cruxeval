@@ -230,7 +230,7 @@ def train():
             cur_loss = total_loss.item() / args.loginterval
             elapsed = time.time() - start_time
             print("here")
-            torch.save(model.state_dict(), '/content/drive/My Drive/lngmodel')
+            torch.save(model.state_dict(), '/content/drive/My Drive/lngmodeladaptiveloss')
             print("here after")
             print('| epoch {:3d} | {:5f}/{:5f} batches  | '
                     'loss {:5.2f} | ppl {:8.2f} | bpc {:8.3f}'.format(
@@ -258,7 +258,7 @@ try:
         optimizer = torch.optim.SGD(params, lr=args.lr, weight_decay=args.wdecay)
     if args.optimizer == 'adam':
         optimizer = torch.optim.Adam(params, lr=args.lr, weight_decay=args.wdecay)
-    model.load_state_dict(torch.load('/content/drive/My Drive/lngmodel'))
+    #model.load_state_dict(torch.load('/content/drive/My Drive/lngmodel'))
     for epoch in range(1, args.epochs+1):
         epoch_start_time = time.time()
         train()
