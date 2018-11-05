@@ -184,7 +184,7 @@ def train():
     ntokens = train_data.vocab_obj.size()[0]
     hidden = model.init_hidden(args.batch_size)
     batch, i = 0, 0
-
+    model.load_state_dict(torch.load('/content/drive/My Drive/lngmodeladaptiveloss'))
 
 
     for  i in  tqdm(range(train_data.modelling_batch_len)):
@@ -212,7 +212,7 @@ def train():
         #print(targets.size())
         targets=targets.contiguous().view(-1)
         raw_loss = criterion(output,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
-        preds=raw_loss[0]
+        #preds=raw_loss[0]
         loss = raw_loss[1]
         # Activiation Regularization
         if args.alpha: loss = loss + sum(args.alpha * dropped_rnn_h.pow(2).mean() for dropped_rnn_h in dropped_rnn_hs[-1:])
@@ -238,6 +238,7 @@ def train():
                 elapsed * 1000 / args.loginterval, cur_loss, math.exp(cur_loss), cur_loss / math.log(2)))
             total_loss = 0
             start_time = time.time()
+            preds=criterion.predict(output)
             pred_sen=''
             for j in range(preds.size()[0]):
                 print(preds[j])
