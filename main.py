@@ -240,6 +240,7 @@ def train():
             start_time = time.time()
             pred_sen=''
             for j in range(preds.size()[0]):
+                print(preds[j])
                 pred_sen+=train_data.vocab_obj.id2word(preds[j])
             print(pred_sen)
             #torch.save(d.state_dict(),'model/dis')
