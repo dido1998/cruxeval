@@ -212,7 +212,7 @@ def train():
         #print(targets.size())
         targets=targets.contiguous().view(-1)
         raw_loss = criterion(output,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
-
+        preds=raw_loss[0]
         loss = raw_loss[1]
         # Activiation Regularization
         if args.alpha: loss = loss + sum(args.alpha * dropped_rnn_h.pow(2).mean() for dropped_rnn_h in dropped_rnn_hs[-1:])
@@ -238,7 +238,10 @@ def train():
                 elapsed * 1000 / args.loginterval, cur_loss, math.exp(cur_loss), cur_loss / math.log(2)))
             total_loss = 0
             start_time = time.time()
-           
+            pred_sen=''
+            for j in range(preds.size()[0]):
+                pred_sen+=train_data.vocab_obj.id2word(preds[j])
+            print(pred_sen)
             #torch.save(d.state_dict(),'model/dis')
             #torch.save([model, criterion, optimizer], args.save)
             ###
