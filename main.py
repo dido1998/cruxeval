@@ -239,6 +239,7 @@ def train():
             total_loss = 0
             start_time = time.time()
             preds=criterion.predict(output)
+            
             pred_sen=''
             for j in range(preds.size()[0]):
                 print(preds[j])

@@ -89,7 +89,7 @@ class Vocab(object):
     self.embed_matrix=np.zeros((len(self.embed_matrix_list),300))
     for e,f in enumerate(self.embed_matrix_list):
       self.embed_matrix[e,:]=self.embed_matrix_list[e]
-    print(self._id_to_word[1310])
+    print(self._id_to_word[0])
     print ("Finished constructing vocabulary of %i total words. Last word added: %s" % (self._count, self._id_to_word[self._count-1]))
 
   def word2id(self, word):
