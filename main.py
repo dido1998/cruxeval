@@ -258,7 +258,7 @@ try:
         optimizer = torch.optim.SGD(params, lr=args.lr, weight_decay=args.wdecay)
     if args.optimizer == 'adam':
         optimizer = torch.optim.Adam(params, lr=args.lr, weight_decay=args.wdecay)
-    #model.load_state_dict(torch.load('/content/drive/My Drive/lngmodel'))
+    model.load_state_dict(torch.load('/content/drive/My Drive/lngmodeladaptiveloss'))
     for epoch in range(1, args.epochs+1):
         epoch_start_time = time.time()
         train()
