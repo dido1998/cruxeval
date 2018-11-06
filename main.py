@@ -212,9 +212,7 @@ def train():
         #print(targets.size())
         targets=targets.contiguous().view(-1)
         t1=''
-        for t in range(targets.size()[0]):
-            t1=t1+str(train_data.vocab_obj.id2word(targets[t].item()))+' '
-        print(t1)
+        
         raw_loss = criterion(output,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
         #preds=raw_loss[0]
         loss = raw_loss[1]
@@ -244,11 +242,7 @@ def train():
             start_time = time.time()
             preds=criterion.predict(output)
 
-            pred_sen=''
-            for j in range(preds.size()[0]):
-                #print(preds[j])
-                pred_sen+=train_data.vocab_obj.id2word(preds[j].item())
-            print(pred_sen)
+            print(preds.size())
             #torch.save(d.state_dict(),'model/dis')
             #torch.save([model, criterion, optimizer], args.save)
             ###
