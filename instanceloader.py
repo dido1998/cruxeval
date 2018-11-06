@@ -27,7 +27,7 @@ class instanceloader(Dataset):
             cur_sent,cur_para=getdata.abstract2sents(i)
             self.modelling_data.append(cur_para)
             
-            print('-----------------')
+            #print('-----------------')
             self.actual_data.append([cur_para,cur_sent,1])
             if len(cur_sent.split())>self.max_summ:
                 self.max_summ=len(cur_sent.split())
