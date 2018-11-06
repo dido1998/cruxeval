@@ -213,7 +213,7 @@ def train():
         targets=targets.contiguous().view(-1)
         t=''
         for t in range(targets.size()[0]):
-            t+=train_data.vocab_obj.id2word(targets[t].item())+' '
+            t=t+str(train_data.vocab_obj.id2word(targets[t].item()))+' '
         print(t)
         raw_loss = criterion(output,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
         #preds=raw_loss[0]
