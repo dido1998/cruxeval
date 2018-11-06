@@ -100,9 +100,10 @@ class instanceloader(Dataset):
                     #print(len(para))
                     temppara=''
                     for i in range(len(para)-1):
-                        print(self.vocab_obj.word2id(para[i]))
+                        #print(self.vocab_obj.word2id(para[i]))
                         para_index[j,i]=self.vocab_obj.word2id(para[i])
                         target_index[j,i]=self.vocab_obj.word2id(para[i+1])
+                        print(target_index[j,i])
                         print(self.vocab_obj.id2word(target_index[j,i]))
                     print('-----------------------')
                 except:
