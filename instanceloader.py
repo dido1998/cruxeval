@@ -96,7 +96,7 @@ class instanceloader(Dataset):
                 try:
                     para=c
                     print(para)
-
+                    print('----------------------------------------')
                     para=para.split()
                     #print(len(para))
                     for i in range(len(para)-1):
@@ -114,4 +114,4 @@ if __name__=='__main__':
     
     for i in range(data.modelling_batch_len):
         data.getitem(i,1)
-        print('----------------------------------------')
+        
