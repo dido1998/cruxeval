@@ -109,7 +109,7 @@ class instanceloader(Dataset):
 
 
 if __name__=='__main__':
-    data=instanceloader('/home/aniket/cnn-dailymail/unsupersum/individualpoints.pickle','/home/aniket/cnn-dailymail/unsupersum/vocab','/home/aniket/pendrive/glove.txt',8)
+    data=instanceloader('/content/drive/My\ Drive/individualpoints.pickle','/content/drive/My\ Drive/vocab','/content/glove.txt',8)
     
     print(data.getitem(6,1))
     print('----------------------------------------')
