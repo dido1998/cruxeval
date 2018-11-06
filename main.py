@@ -240,9 +240,10 @@ def train():
                 elapsed * 1000 / args.loginterval, cur_loss, math.exp(cur_loss), cur_loss / math.log(2)))
             total_loss = 0
             start_time = time.time()
-            preds=criterion.log_prob(output)
+            preds=criterion.predict(output)
 
-            print(preds.size())
+
+            print(preds.max())
             #torch.save(d.state_dict(),'model/dis')
             #torch.save([model, criterion, optimizer], args.save)
             ###
