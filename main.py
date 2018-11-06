@@ -243,7 +243,7 @@ def train():
             preds=criterion.predict(output)
 
 
-            print(preds.max())
+            print(preds)
             #torch.save(d.state_dict(),'model/dis')
             #torch.save([model, criterion, optimizer], args.save)
             ###
