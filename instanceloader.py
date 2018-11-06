@@ -95,14 +95,17 @@ class instanceloader(Dataset):
                 #print(j)
                 try:
                     para=c
-                    print(para)
-                    print('----------------------------------------')
+
                     para=para.split()
                     #print(len(para))
+                    temppara=''
                     for i in range(len(para)-1):
                         #print(self.vocab_obj.word2id(para[i]))
                         para_index[j,i]=self.vocab_obj.word2id(para[i])
                         target_index[j,i]=self.vocab_obj.word2id(para[i+1])
+                        temppara+=self.vocab_obj.id2word(target_index[j,i])+' '
+                    print(temppara)
+                    print('-----------------------')
                 except:
                     pass
             return para_index,target_index
