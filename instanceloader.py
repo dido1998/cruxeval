@@ -14,7 +14,7 @@ class instanceloader(Dataset):
     def __init__(self, root_dir,vocab_dir,glove_file,batch_size):
         with open(root_dir,'rb') as f:
            data=pickle.load(f)
-        #self.vocab_obj=Vocab(vocab_dir,0,glove_file)
+        self.vocab_obj=Vocab(vocab_dir,0,glove_file)
         
         length=len(data)
         self.actual_data=[]
@@ -26,7 +26,7 @@ class instanceloader(Dataset):
         for i in data:
             cur_sent,cur_para=getdata.abstract2sents(i)
             self.modelling_data.append(cur_para)
-            print(cur_para)
+            
             print('-----------------')
             self.actual_data.append([cur_para,cur_sent,1])
             if len(cur_sent.split())>self.max_summ:
@@ -95,7 +95,8 @@ class instanceloader(Dataset):
                 #print(j)
                 try:
                     para=c
-                    
+                    print(para)
+
                     para=para.split()
                     #print(len(para))
                     for i in range(len(para)-1):
@@ -111,5 +112,6 @@ class instanceloader(Dataset):
 if __name__=='__main__':
     data=instanceloader('/content/drive/My Drive/individualpoints.pickle','/content/drive/My Drive/vocab','/content/glove.txt',8)
     
-    print(data.getitem(6,1))
+    for i in range(data.modelling_batch_len):
+        data.getitem(i,1)
     print('----------------------------------------')
