@@ -184,7 +184,7 @@ def train():
     ntokens = train_data.vocab_obj.size()[0]
     hidden = model.init_hidden(args.batch_size)
     batch, i = 0, 0
-    #model.load_state_dict(torch.load('/content/drive/My Drive/lngmodeladaptiveloss'))
+    model.load_state_dict(torch.load('/content/drive/My Drive/lngmodeladaptiveloss'))
 
 
     for  i in  tqdm(range(train_data.modelling_batch_len)):
@@ -240,10 +240,10 @@ def train():
                 elapsed * 1000 / args.loginterval, cur_loss, math.exp(cur_loss), cur_loss / math.log(2)))
             total_loss = 0
             start_time = time.time()
-            preds=criterion.predict(output)
+            #preds=criterion.predict(output)
 
 
-            print(preds)
+            #print(preds)
             #torch.save(d.state_dict(),'model/dis')
             #torch.save([model, criterion, optimizer], args.save)
             ###
@@ -263,7 +263,7 @@ try:
         optimizer = torch.optim.SGD(params, lr=args.lr, weight_decay=args.wdecay)
     if args.optimizer == 'adam':
         optimizer = torch.optim.Adam(params, lr=args.lr, weight_decay=args.wdecay)
-    #model.load_state_dict(torch.load('/content/drive/My Drive/lngmodeladaptiveloss'))
+    model.load_state_dict(torch.load('/content/drive/My Drive/lngmodeladaptiveloss'))
     for epoch in range(1, args.epochs+1):
         epoch_start_time = time.time()
         train()
