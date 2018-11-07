@@ -183,16 +183,18 @@ print('Model total parameters:', total_params)
 
 def evaluate():
     startword=getdata.START_DECODING
-    starttensor=torch.zeros(1,1)
-    starttensor[0,0]=train_data.vocab_obj.word2id(startword)
+    starttensor=torch.zeros(args.batch_size,1)
+    for i in range(args.batch_size):
+        starttensor[i,0]=train_data.vocab_obj.word2id(startword)
     hidden = model.init_hidden(1)
     sent=''
     for i in range(60):
         output, hidden, rnn_hs, dropped_rnn_hs = model(starttensor, hidden, return_h=True)
         output=output.view(-1,output.size()[2])
         preds=criterion.predict(output)
-        starttensor[0,0]=preds
-        sent+=train_data.vocab_obj.id2word(preds.item())+' '
+        for i in range(args.batch_size):
+            starttensor[i,0]=preds[i]
+        sent+=train_data.vocab_obj.id2word(preds[0].item())+' '
     print(sent)
 
 def train():
