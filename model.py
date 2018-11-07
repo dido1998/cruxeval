@@ -79,7 +79,7 @@ class RNNModel(nn.Module):
         
         #emb=self.encoder(input)
         emb = self.lockdrop(emb, self.dropouti)
-        print(emb.size())
+        emb=emb.view(-1,8,300)
         raw_output = emb
         new_hidden = []
         #raw_output, hidden = self.rnn(emb, hidden)
