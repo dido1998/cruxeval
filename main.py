@@ -186,7 +186,7 @@ def evaluate():
     starttensor=torch.zeros(args.batch_size,1)
     for i in range(args.batch_size):
         starttensor[i,0]=train_data.vocab_obj.word2id(startword)
-    hidden = model.init_hidden(1)
+    hidden = model.init_hidden(args.batch_size)
     sent=''
     for i in range(60):
         output, hidden, rnn_hs, dropped_rnn_hs = model(starttensor, hidden, return_h=True)
