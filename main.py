@@ -7,6 +7,7 @@ import torch.nn as nn
 from instanceloader import instanceloader
 import data
 from tqdm import tqdm
+import getdata
 from adaptive import AdaptiveLogSoftmaxWithLoss
 import model
 
@@ -161,7 +162,7 @@ print('Model total parameters:', total_params)
 # Training code
 ###############################################################################
 
-def evaluate(data_source, batch_size=10):
+"""def evaluate(data_source, batch_size=10):
     # Turn on evaluation mode which disables dropout.
     model.eval()
     if args.model == 'QRNN': model.reset()
@@ -175,6 +176,24 @@ def evaluate(data_source, batch_size=10):
         hidden = repackage_hidden(hidden)
     return total_loss.item() / len(data_source)
 
+"""
+criterion.load_state_dict(torch.load('/content/criterionadaptive'))
+model.load_state_dict(torch.load('/content/lngmodeladaptiveloss'))
+
+    
+def evaluate():
+    startword=getdata.START_DECODING
+    starttensor=torch.zeros(1,1)
+    starttensor[0,0]=train_data.vocab_obj.word2id(startword)
+    hidden = model.init_hidden(1)
+    sent=''
+    for i in range(60):
+        output, hidden, rnn_hs, dropped_rnn_hs = model(starttensor, hidden, return_h=True)
+        output=output.view(-1,output.size()[2])
+        preds=criterion.predict(output)
+        starttensor[0,0]=preds
+        sent+=train_data.vocab_obj.id2word(preds.item())+' '
+    print(sent)
 
 def train():
     # Turn on training mode which enables dropout.
@@ -184,8 +203,7 @@ def train():
     ntokens = train_data.vocab_obj.size()[0]
     hidden = model.init_hidden(args.batch_size)
     batch, i = 0, 0
-    model.load_state_dict(torch.load('/content/lngmodeladaptiveloss'))
-
+    
 
     for  i in  tqdm(range(train_data.modelling_batch_len)):
         #bptt = args.bptt if np.random.random() < 0.95 else args.bptt / 2.
@@ -233,6 +251,8 @@ def train():
             elapsed = time.time() - start_time
             print("here")
             torch.save(model.state_dict(), '/content/drive/My Drive/lngmodeladaptiveloss')
+            torch.save(criterion.state_dict(), '/content/drive/My Drive/criterionadaptive')
+            evaluate()
             print("here after")
             print('| epoch {:3d} | {:5f}/{:5f} batches  | '
                     'loss {:5.2f} | ppl {:8.2f} | bpc {:8.3f}'.format(

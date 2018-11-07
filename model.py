@@ -72,14 +72,14 @@ class RNNModel(nn.Module):
         self.decoder.weight.data.uniform_(-initrange, initrange)
 
     def forward(self, input, hidden, return_h=False):
-        input=input.view(-1,input.size()[0])
+        #input=input.view(-1,input.size()[0])
         input=input.long().cuda()
         emb = embedded_dropout(self.encoder, input, dropout=self.dropoute if self.training else 0)
         #emb = self.idrop(emb)
         
         #emb=self.encoder(input)
         emb = self.lockdrop(emb, self.dropouti)
-
+        print(emb.size())
         raw_output = emb
         new_hidden = []
         #raw_output, hidden = self.rnn(emb, hidden)
