@@ -177,10 +177,10 @@ print('Model total parameters:', total_params)
     return total_loss.item() / len(data_source)
 
 """
-criterion.load_state_dict(torch.load('/content/criterionadaptive'))
-model.load_state_dict(torch.load('/content/lngmodeladaptiveloss'))
+#criterion.load_state_dict(torch.load('/content/criterionadaptive'))
+#model.load_state_dict(torch.load('/content/lngmodeladaptiveloss'))
 
-    
+
 def evaluate():
     startword=getdata.START_DECODING
     starttensor=torch.zeros(1,1)
