@@ -86,7 +86,7 @@ class RNNModel(nn.Module):
         raw_outputs = []
         outputs = []
         for l, rnn in enumerate(self.rnns):
-            print(raw_output.size())
+            #print(raw_output.size())
             current_input = raw_output
             raw_output, new_h = rnn(raw_output, hidden[l])
             new_hidden.append(new_h)
@@ -98,7 +98,7 @@ class RNNModel(nn.Module):
         hidden = new_hidden
 
         result = self.lockdrop(raw_output, self.dropout)
-
+        print(result.size())
         #result=self.decoder(output.view(-1, output.size(2)))
         #outputs.append(output)
 
