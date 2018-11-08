@@ -105,6 +105,9 @@ class instanceloader(Dataset):
                     #print(len(para)-1)
                     temppara=''
                     cntone=0
+                    print(cntone)
+                    print(len(para)-1)
+                    print('----------')
                     while cntone<len(para)-1:
                         cntone+=1
                         print("guyguug")
