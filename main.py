@@ -236,9 +236,10 @@ def train():
         for k in range(targets.size()[0]):
             if targets[k].item()==0:
                 cntzero+=1
-            check+=str(targets[k].item()) 
-        print(check) 
+            #check+=str(targets[k].item())+' '
+        #print(check) 
         print(cntzero)
+        print(targets.size()[0])
         t1=''
         
         raw_loss = criterion(output,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
