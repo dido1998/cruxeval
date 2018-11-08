@@ -107,6 +107,7 @@ class instanceloader(Dataset):
                     cntone=0
                     while cntone<len(para)-1:
                         cntone+=1
+                        print(cntone)
                         #print(self.vocab_obj.word2id(para[i]))
                         para_index[j,i]=self.vocab_obj.word2id(para[i])
                         target_index[i,j]=self.vocab_obj.word2id(para[i+1])
