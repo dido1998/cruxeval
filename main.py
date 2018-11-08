@@ -146,7 +146,7 @@ if not criterion:
     print('Using', splits)
     
     
-    criterion=AdaptiveLogSoftmaxWithLoss(512,ntokens,splits)
+    criterion=AdaptiveLogSoftmaxWithLoss(args.nhid,ntokens,splits)
     #criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
 ###
 if args.cuda:
