@@ -100,6 +100,8 @@ class instanceloader(Dataset):
                     para=c
 
                     para=para.split()
+                except:
+                    continue
                     #print(len(para)-1)
                     temppara=''
                     cntone=0
@@ -112,8 +114,7 @@ class instanceloader(Dataset):
                         
                         temppara+=self.vocab_obj.id2word(target_index[j,i].item())+' '
                     print(cntone)
-                except:
-                    pass
+                
             
             print(cntzero)
 
