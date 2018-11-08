@@ -100,14 +100,14 @@ class instanceloader(Dataset):
                     para=c
 
                     para=para.split()
-                    #print(len(para))
+                    print(len(para))
                     temppara=''
                     for i in range(len(para)-1):
                         cntone+=1
                         #print(self.vocab_obj.word2id(para[i]))
                         para_index[j,i]=self.vocab_obj.word2id(para[i])
                         target_index[i,j]=self.vocab_obj.word2id(para[i+1])
-                        print(target_index[i,j])
+                        #print(target_index[i,j])
                         
                         temppara+=self.vocab_obj.id2word(target_index[j,i].item())+' '
                     
