@@ -218,6 +218,12 @@ def train():
         optimizer.param_groups[0]['lr'] = lr2 
         model.train()
         data, targets = train_data.getitem(i,1)
+        cntzero=0;
+        for l in range(targets.size()[0]):
+            for y  in range(targets.size()[1]):
+                if targets[l][y].item()==0:
+                    cntzero+=1
+        print(cntzero)
         targets=targets.cuda()
         # Starting each batch, we detach the hidden state from how it was previously produced.
         # If we didn't, the model would try backpropagating all the way to start of the dataset.
@@ -231,7 +237,7 @@ def train():
         #targets=targets.transpose(1,0)
         #print(targets.size())
         targets=targets.view(-1)
-        check=''
+        """check=''
         cntzero=0
         for k in range(targets.size()[0]):
             if targets[k].item()==0:
@@ -239,7 +245,7 @@ def train():
             #check+=str(targets[k].item())+' '
         #print(check) 
         print(cntzero)
-        print(targets.size()[0])
+        print(targets.size()[0])"""
         t1=''
         
         raw_loss = criterion(output,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
