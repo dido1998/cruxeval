@@ -110,11 +110,11 @@ class instanceloader(Dataset):
                     cntone+=1
                     print("guyguug")
                     #print(self.vocab_obj.word2id(para[i]))
-                    para_index[j,i]=self.vocab_obj.word2id(para[i])
-                    target_index[i,j]=self.vocab_obj.word2id(para[i+1])
+                    para_index[j,cntone]=self.vocab_obj.word2id(para[cntone])
+                    target_index[cntone,j]=self.vocab_obj.word2id(para[cntone+1])
                     #print(target_index[i,j])
                     
-                    temppara+=self.vocab_obj.id2word(target_index[j,i].item())+' '
+                    #temppara+=self.vocab_obj.id2word(target_index[j,i].item())+' '
                 print(cntone)
                 
             
