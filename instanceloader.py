@@ -104,17 +104,17 @@ class instanceloader(Dataset):
                         #print(self.vocab_obj.word2id(para[i]))
                         para_index[j,i]=self.vocab_obj.word2id(para[i])
                         target_index[i,j]=self.vocab_obj.word2id(para[i+1])
-                        #print(target_index[j,i])
+                        print(target_index[i,j])
                         
                         temppara+=self.vocab_obj.id2word(target_index[j,i].item())+' '
                     
                 except:
                     pass
+            print('-----------------')
             for l in range(target_index.size()[0]):
                 for y in range(target_index.size()[1]):
-                    if target_index[l,y].item()==0:
-                        cntzero+=1
-            print(cntzero)
+                    print(target_index[l,y])
+
 
             return para_index,target_index
 
