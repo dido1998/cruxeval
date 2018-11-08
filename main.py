@@ -24,7 +24,7 @@ parser.add_argument('--nhid', type=int, default=1150,
                     help='number of hidden units per layer')
 parser.add_argument('--nlayers', type=int, default=3,
                     help='number of layers')
-parser.add_argument('--lr', type=float, default=30,
+parser.add_argument('--lr', type=float, default=0.05,
                     help='initial learning rate')
 parser.add_argument('--clip', type=float, default=0.25,
                     help='gradient clipping')
@@ -177,8 +177,8 @@ print('Model total parameters:', total_params)
     return total_loss.item() / len(data_source)
 
 """
-criterion.load_state_dict(torch.load('/content/criterionadaptive'))
-model.load_state_dict(torch.load('/content/lngmodeladaptiveloss'))
+#criterion.load_state_dict(torch.load('/content/criterionadaptive'))
+#model.load_state_dict(torch.load('/content/lngmodeladaptiveloss'))
 
 
 def evaluate():
@@ -228,9 +228,10 @@ def train():
         #print(output.size())
         output = output.view(-1, output.size(2))
        
-        targets=targets.transpose(1,0)
+        #targets=targets.transpose(1,0)
         #print(targets.size())
-        targets=targets.contiguous().view(-1)
+        targets=targets.view(-1)
+
         t1=''
         
         raw_loss = criterion(output,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)

@@ -88,7 +88,7 @@ class instanceloader(Dataset):
         else:   
             cur_data=self.modelling_batches[idx]
             para_index=torch.zeros(len(cur_data),self.max_para)
-            target_index=torch.zeros(len(cur_data),self.max_para)
+            target_index=torch.zeros(self.max_para,len(cur_data))
             #summ_index=torch.zeros(len(cur_data),self.max_summ)
             #print(len(cur_data))
             for j,c in enumerate(cur_data):
@@ -102,7 +102,7 @@ class instanceloader(Dataset):
                     for i in range(len(para)-1):
                         #print(self.vocab_obj.word2id(para[i]))
                         para_index[j,i]=self.vocab_obj.word2id(para[i])
-                        target_index[j,i]=self.vocab_obj.word2id(para[i+1])
+                        target_index[i,j]=self.vocab_obj.word2id(para[i+1])
                         #print(target_index[j,i])
                         temppara+=self.vocab_obj.id2word(target_index[j,i].item())+' '
                     
