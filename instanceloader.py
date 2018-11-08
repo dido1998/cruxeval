@@ -103,9 +103,9 @@ class instanceloader(Dataset):
                 #print(len(para)-1)
                 temppara=''
                 cntone=0
-                print(cntone)
-                print(len(para)-1)
-                print('----------')
+                
+                #print(len(para)-1)
+                #print('----------')
                 while cntone<len(para)-1:
                     
                     #print(self.vocab_obj.word2id(para[i]))
@@ -115,10 +115,10 @@ class instanceloader(Dataset):
                     cntone+=1
 
                     #temppara+=self.vocab_obj.id2word(target_index[j,i].item())+' '
-                print(cntone)
+                #print(cntone)
                 
             
-            print(cntzero)
+            #print(cntzero)
 
             return para_index,target_index
 
