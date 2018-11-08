@@ -231,7 +231,7 @@ def train():
         #targets=targets.transpose(1,0)
         #print(targets.size())
         targets=targets.view(-1)
-        print(targets
+        print(targets)
         t1=''
         
         raw_loss = criterion(output,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
