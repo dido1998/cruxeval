@@ -92,7 +92,7 @@ class instanceloader(Dataset):
             #summ_index=torch.zeros(len(cur_data),self.max_summ)
             #print(len(cur_data))
             cntzero=0
-            cntone=0
+            
             for j,c in enumerate(cur_data):
                 #print(j)
                 try:
@@ -102,6 +102,7 @@ class instanceloader(Dataset):
                     para=para.split()
                     print(len(para)-1)
                     temppara=''
+                    cntone=0
                     for i in range(len(para)-1):
                         cntone+=1
                         #print(self.vocab_obj.word2id(para[i]))
@@ -110,10 +111,10 @@ class instanceloader(Dataset):
                         #print(target_index[i,j])
                         
                         temppara+=self.vocab_obj.id2word(target_index[j,i].item())+' '
-                    
+                    print(cntone)
                 except:
                     pass
-            print(cntone)
+            
             print(cntzero)
 
             return para_index,target_index
