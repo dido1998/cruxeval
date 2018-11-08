@@ -218,12 +218,8 @@ def train():
         optimizer.param_groups[0]['lr'] = lr2 
         model.train()
         data, targets = train_data.getitem(i,1)
-        cntzero=0;
-        for l in range(targets.size()[0]):
-            for y  in range(targets.size()[1]):
-                if targets[l][y].item()==0:
-                    cntzero+=1
-        print(cntzero)
+        
+        
         targets=targets.cuda()
         # Starting each batch, we detach the hidden state from how it was previously produced.
         # If we didn't, the model would try backpropagating all the way to start of the dataset.
