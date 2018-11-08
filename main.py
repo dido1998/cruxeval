@@ -190,7 +190,7 @@ def evaluate():
     sent=''
     for i in range(60):
         output, hidden, rnn_hs, dropped_rnn_hs = model(starttensor, hidden, return_h=True)
-        output=output.view(-1,output.size()[2])
+        #output=output.view(-1,output.size()[2])
         preds=criterion.predict(output)
         for i in range(args.batch_size):
             starttensor[i,0]=preds[i]
