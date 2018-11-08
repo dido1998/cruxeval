@@ -14,7 +14,7 @@ class instanceloader(Dataset):
     def __init__(self, root_dir,vocab_dir,glove_file,batch_size):
         with open(root_dir,'rb') as f:
            data=pickle.load(f)
-        self.vocab_obj=Vocab(vocab_dir,0,glove_file)
+        self.vocab_obj=Vocab(vocab_dir,50000,glove_file)
         
         length=len(data)
         self.actual_data=[]

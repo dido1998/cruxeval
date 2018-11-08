@@ -182,7 +182,7 @@ print('Model total parameters:', total_params)
 
 
 def evaluate():
-    startword=getdata.START_DECODING
+    startword=34
     starttensor=torch.zeros(args.batch_size,1)
     for i in range(args.batch_size):
         starttensor[i,0]=train_data.vocab_obj.word2id(startword)
