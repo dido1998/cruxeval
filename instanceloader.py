@@ -97,7 +97,7 @@ class instanceloader(Dataset):
                     para=c
 
                     para=para.split()
-                    #print(len(para))
+                    print(len(para))
                     temppara=''
                     for i in range(len(para)-1):
                         #print(self.vocab_obj.word2id(para[i]))
