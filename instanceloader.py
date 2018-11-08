@@ -95,29 +95,27 @@ class instanceloader(Dataset):
             
             for j,c in enumerate(cur_data):
                 #print(j)
-                try:
-                    cntzero+=1
-                    para=c
-
-                    para=para.split()
-                except:
-                    continue
-                    #print(len(para)-1)
-                    temppara=''
-                    cntone=0
-                    print(cntone)
-                    print(len(para)-1)
-                    print('----------')
-                    while cntone<len(para)-1:
-                        cntone+=1
-                        print("guyguug")
-                        #print(self.vocab_obj.word2id(para[i]))
-                        para_index[j,i]=self.vocab_obj.word2id(para[i])
-                        target_index[i,j]=self.vocab_obj.word2id(para[i+1])
-                        #print(target_index[i,j])
-                        
-                        temppara+=self.vocab_obj.id2word(target_index[j,i].item())+' '
-                    print(cntone)
+               
+                cntzero+=1
+                para=c
+                para=para.split()
+                
+                #print(len(para)-1)
+                temppara=''
+                cntone=0
+                print(cntone)
+                print(len(para)-1)
+                print('----------')
+                while cntone<len(para)-1:
+                    cntone+=1
+                    print("guyguug")
+                    #print(self.vocab_obj.word2id(para[i]))
+                    para_index[j,i]=self.vocab_obj.word2id(para[i])
+                    target_index[i,j]=self.vocab_obj.word2id(para[i+1])
+                    #print(target_index[i,j])
+                    
+                    temppara+=self.vocab_obj.id2word(target_index[j,i].item())+' '
+                print(cntone)
                 
             
             print(cntzero)
