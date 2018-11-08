@@ -100,7 +100,7 @@ class instanceloader(Dataset):
                     para=c
 
                     para=para.split()
-                    print(len(para)-1)
+                    #print(len(para)-1)
                     temppara=''
                     cntone=0
                     for i in range(len(para)-1):
