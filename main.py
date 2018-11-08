@@ -134,7 +134,7 @@ if args.resume:
             elif rnn.zoneout > 0: rnn.zoneout = args.wdrop
 ###
 if not criterion:
-    splits = []
+    splits = [50000]
     if ntokens > 500000:
         # One Billion
         # This produces fairly even matrix mults for the buckets:
