@@ -229,18 +229,18 @@ def train():
 
         output, hidden, rnn_hs, dropped_rnn_hs = model(data, hidden, return_h=True)
         #print(output.size())
-        output = output.view(-1, output.size(2))
+        #output = output.view(-1, output.size(2))
        
         #targets=targets.transpose(1,0)
         #print(targets.size())
-        targets=targets.view(-1)
+        targets=targets.view(targets.size(0)*targets.size(1))
         check=''
         cntzero=0
-        for k in range(targets.size()[0]):
+        """for k in range(targets.size()[0]):
             #if targets[k].item()==0:
             #    cntzero+=1
             check+=str(targets[k].item())+' '
-        print(check) 
+        print(check) """
         #print(cntzero)
         #print(targets.size()[0])
         t1=''
