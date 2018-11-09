@@ -107,7 +107,7 @@ class lstmmodel(nn.Module):
 		#self.rnn_layers.append(LSTM_With_H_Detach_Cell(input_size,hidden_size).cuda())
 		#for i in range(num_layers-1):
 		#    self.rnn_layers.append(LSTM_With_H_Detach_Cell(hidden_size,hidden_size).cuda())
-	def  forward(self,x,state,eval):
+	def  forward(self,x):
 		h,c=[],[]
 		x=x.long().cuda()
 
@@ -118,7 +118,7 @@ class lstmmodel(nn.Module):
 		return x
     
 	def init_hidden(self,batch_size):
-		return (torch.zeros(2*self.num_layers,batch_size,self.hidden_size).cuda(),torch.zeros(2*self.num_layers,batch_size,self.hidden_size).cuda())
+		return (torch.zeros(2*self.num_layers,batch_size,int(self.hidden_size/2)).cuda(),torch.zeros(2*self.num_layers,batch_size,int(self.hidden_size/2)).cuda())
 
 if __name__=="__main__":
 	rnn=LSTM_With_H_Detach(12,16,3)

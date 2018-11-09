@@ -227,7 +227,7 @@ def train():
         hidden = model.init_hidden(args.batch_size)
         optimizer.zero_grad()
 
-        out=model(data,hidden,0)
+        out=model(data)
         #print(output.size())
         out=out.view(-1,args.nhid)
         #out = out.view(-1, out.size(2))
