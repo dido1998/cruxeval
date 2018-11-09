@@ -10,7 +10,7 @@ from tqdm import tqdm
 import getdata
 from adaptive import AdaptiveLogSoftmaxWithLoss
 import model
-
+from mymodel import LSTM_With_H_Detach
 from utils import batchify, get_batch, repackage_hidden
 
 parser = argparse.ArgumentParser(description='PyTorch PennTreeBank RNN/LSTM Language Model')
@@ -120,7 +120,7 @@ from splitcross import SplitCrossEntropyLoss
 criterion = None
 
 ntokens,emsize = train_data.vocab_obj.size()
-model = model.RNNModel(train_data.vocab_obj,args.model, ntokens, emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
+model = LSTM_With_H_Detach(emsize,args.nhid,args.nlayers) #model.RNNModel(train_data.vocab_obj,args.model, ntokens, emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
 ###
 if args.resume:
     print('Resuming model ...')
@@ -146,7 +146,7 @@ if not criterion:
     print('Using', splits)
     
     
-    criterion=AdaptiveLogSoftmaxWithLoss(args.nhid,ntokens,splits)
+    criterion=nn.CrossEntropyLoss()
     #criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
 ###
 if args.cuda:
@@ -216,7 +216,7 @@ def train():
 
         lr2 = optimizer.param_groups[0]['lr']
         optimizer.param_groups[0]['lr'] = lr2 
-        model.train()
+        #model.train()
         data, targets = train_data.getitem(i,1)
 
         
@@ -227,9 +227,9 @@ def train():
         hidden = model.init_hidden(args.batch_size)
         optimizer.zero_grad()
 
-        output, hidden, rnn_hs, dropped_rnn_hs = model(data, hidden, return_h=True)
+        h,c,out=model(data,hidden,0)
         #print(output.size())
-        #output = output.view(-1, output.size(2))
+        out = out.view(-1, out.size(2))
        
         #targets=targets.transpose(1,0)
         #print(targets.size())
@@ -245,9 +245,9 @@ def train():
         #print(targets.size()[0])
         t1=''
         
-        raw_loss = criterion(output,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
+        raw_loss = criterion(out,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
         #preds=raw_loss[0]
-        loss = raw_loss[1]
+        loss = raw_loss
         # Activiation Regularization
         if args.alpha: loss = loss + sum(args.alpha * dropped_rnn_h.pow(2).mean() for dropped_rnn_h in dropped_rnn_hs[-1:])
         # Temporal Activation Regularization (slowness)
@@ -266,7 +266,7 @@ def train():
             
             torch.save(model.state_dict(), '/content/drive/My Drive/lngmodeladaptiveloss')
             torch.save(criterion.state_dict(), '/content/drive/My Drive/criterionadaptive')
-            evaluate()
+            #evaluate()
             
             print('| epoch {:3d} | {:5f}/{:5f} batches  | '
                     'loss {:5.2f} | ppl {:8.2f} | bpc {:8.3f}'.format(
