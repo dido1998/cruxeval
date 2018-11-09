@@ -186,11 +186,11 @@ def evaluate():
     starttensor=torch.zeros(args.batch_size,1)
     for i in range(args.batch_size):
         starttensor[i,0]=train_data.vocab_obj.word2id(startword)
-    hidden = model.init_hidden(args.batch_size)
+    model.hidden = model.init_hidden(args.batch_size)
     sent=''
-    for i in range(60):
-        output, hidden, rnn_hs, dropped_rnn_hs = model(starttensor, hidden, return_h=True)
-        #output=output.view(-1,output.size()[2])
+    for i in range(100):
+        output,model.hidden = model(starttensor)
+        output=output.view(-1,output.size()[2])
         preds=criterion.predict(output)
         for i in range(args.batch_size):
             starttensor[i,0]=preds[i]
@@ -224,19 +224,19 @@ def train():
         targets=targets.cuda()
         # Starting each batch, we detach the hidden state from how it was previously produced.
         # If we didn't, the model would try backpropagating all the way to start of the dataset.
-        hidden = model.init_hidden(args.batch_size)
+        model.hidden = model.init_hidden(args.batch_size)
         optimizer.zero_grad()
 
-        out=model(data)
+        out,_=model(data)
         #print(output.size())
         out=out.view(-1,args.nhid)
         #out = out.view(-1, out.size(2))
-        print(out.size())
+        
 
         #targets=targets.transpose(1,0)
         #print(targets.size())
         targets=targets.view(targets.size(0)*targets.size(1))
-        print(targets.size())
+        
         check=''
         cntzero=0
         """for k in range(targets.size()[0]):
@@ -269,7 +269,7 @@ def train():
             
             torch.save(model.state_dict(), '/content/drive/My Drive/lngmodeladaptiveloss')
             torch.save(criterion.state_dict(), '/content/drive/My Drive/criterionadaptive')
-            #evaluate()
+            evaluate()
             
             print('| epoch {:3d} | {:5f}/{:5f} batches  | '
                     'loss {:5.2f} | ppl {:8.2f} | bpc {:8.3f}'.format(

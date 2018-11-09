@@ -98,6 +98,7 @@ class lstmmodel(nn.Module):
 		self.hidden_size=hidden_size
 		self.num_layers=num_layers
 		self.ntoken=ntoken
+		self.hidden_state=None
 		self.encoder = nn.Embedding(ntoken, input_size)
 		embed_matrix_tensor=torch.from_numpy(vocab_obj.embed_matrix).cuda()
 		self.encoder.load_state_dict({'weight':embed_matrix_tensor})
@@ -113,9 +114,9 @@ class lstmmodel(nn.Module):
 
 		x=self.encoder(x)
 		x=x.transpose(1,0)
-		hidden_size=self.init_hidden(x.size(1))
+		
 		x,hidden_size=self.lstm(x,hidden_size)
-		return x
+		return x,hidden_size
     
 	def init_hidden(self,batch_size):
 		return (torch.zeros(2*self.num_layers,batch_size,int(self.hidden_size/2)).cuda(),torch.zeros(2*self.num_layers,batch_size,int(self.hidden_size/2)).cuda())
