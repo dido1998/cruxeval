@@ -29,6 +29,7 @@ class LSTM_With_H_Detach(nn.Module):
         self.hidden_size=hidden_size
         self.num_layers=num_layers
         self.rnn_layers=[]
+        self.ntoken=ntoken
         self.encoder = nn.Embedding(ntoken, input_size)
         embed_matrix_tensor=torch.from_numpy(vocab_obj.embed_matrix).cuda()
         self.encoder.load_state_dict({'weight':embed_matrix_tensor})
