@@ -93,20 +93,20 @@ class LSTM_With_H_Detach(nn.Module):
 
 class lstmmodel(nn.Module):
 	def __init__(self,input_size,hidden_size,num_layers,ntoken,vocab_obj):
-        super(LSTM_With_H_Detach,self).__init__()
-        self.input_size=input_size
-        self.hidden_size=hidden_size
-        self.num_layers=num_layers
-        self.ntoken=ntoken
-        self.encoder = nn.Embedding(ntoken, input_size)
-        embed_matrix_tensor=torch.from_numpy(vocab_obj.embed_matrix).cuda()
-        self.encoder.load_state_dict({'weight':embed_matrix_tensor})
-        self.lstm=nn.LSTM(self.input_size,self.hidden_size,self.num_layers,bidirectional=True)
-        #self.decoder=nn.Linear(self.hidden_size,ntoken)
-        #self.dist = torch.distributions.Bernoulli(torch.Tensor([0.25]))
-        #self.rnn_layers.append(LSTM_With_H_Detach_Cell(input_size,hidden_size).cuda())
-        #for i in range(num_layers-1):
-        #    self.rnn_layers.append(LSTM_With_H_Detach_Cell(hidden_size,hidden_size).cuda())
+		super(lstmmodel,self).__init__()
+		self.input_size=input_size
+		self.hidden_size=hidden_size
+		self.num_layers=num_layers
+		self.ntoken=ntoken
+		self.encoder = nn.Embedding(ntoken, input_size)
+		embed_matrix_tensor=torch.from_numpy(vocab_obj.embed_matrix).cuda()
+		self.encoder.load_state_dict({'weight':embed_matrix_tensor})
+		self.lstm=nn.LSTM(self.input_size,self.hidden_size,self.num_layers,bidirectional=True)
+		#self.decoder=nn.Linear(self.hidden_size,ntoken)
+		#self.dist = torch.distributions.Bernoulli(torch.Tensor([0.25]))
+		#self.rnn_layers.append(LSTM_With_H_Detach_Cell(input_size,hidden_size).cuda())
+		#for i in range(num_layers-1):
+		#    self.rnn_layers.append(LSTM_With_H_Detach_Cell(hidden_size,hidden_size).cuda())
     def  forward(self,x,state,eval):
         h,c=[],[]
         x=x.long().cuda()
