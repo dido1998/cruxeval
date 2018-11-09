@@ -112,10 +112,10 @@ class lstmmodel(nn.Module):
 		h,c=[],[]
 		x=x.long().cuda()
 
-		x=self.encoder(x)
+		x=F.reul(self.encoder(x))
 		x=x.transpose(1,0)
 		
-		x,hidden_size=self.lstm(x,self.hidden)
+		x,hidden_size=F.relu(self.lstm(x,self.hidden))
 		return x,hidden_size
     
 	def init_hidden(self,batch_size):
