@@ -115,8 +115,8 @@ class lstmmodel(nn.Module):
 		x=F.relu(self.encoder(x))
 		x=x.transpose(1,0)
 		
-		x,hidden_size=F.relu(self.lstm(x,self.hidden))
-		return x,hidden_size
+		x,hidden_size=self.lstm(x,self.hidden)
+		return F.relu(x),hidden_size
     
 	def init_hidden(self,batch_size):
 		return (torch.zeros(2*self.num_layers,batch_size,int(self.hidden_size/2)).cuda(),torch.zeros(2*self.num_layers,batch_size,int(self.hidden_size/2)).cuda())
