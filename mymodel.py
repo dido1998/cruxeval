@@ -34,9 +34,9 @@ class LSTM_With_H_Detach(nn.Module):
         self.encoder.load_state_dict({'weight':embed_matrix_tensor})
         self.decoder=nn.Linear(self.hidden_size,ntoken)
         self.dist = torch.distributions.Bernoulli(torch.Tensor([0.25]))
-        self.rnn_layers.append(LSTM_With_H_Detach_Cell(input_size,hidden_size))
+        self.rnn_layers.append(LSTM_With_H_Detach_Cell(input_size,hidden_size).cuda())
         for i in range(num_layers-1):
-            self.rnn_layers.append(LSTM_With_H_Detach_Cell(hidden_size,hidden_size))
+            self.rnn_layers.append(LSTM_With_H_Detach_Cell(hidden_size,hidden_size).cuda())
     def  forward(self,x,state,eval):
         h,c=[],[]
         x=x.long().cuda()
@@ -55,7 +55,7 @@ class LSTM_With_H_Detach(nn.Module):
             for j in range(self.num_layers):
                 h_t_i,c_t_i=h[i][j],c[i][j]
 
-                c_t,h_t=self.rnn_layers[j](curr_ip,(h_t_i,c_t_i))
+                c_t,h_t=F.relu(self.rnn_layers[j](curr_ip,(h_t_i,c_t_i)))
                 curr_ip=h_t
                 if self.dist.sample()==1:
                     temp_state_h.append(h_t.detach())
