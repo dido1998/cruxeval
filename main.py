@@ -10,7 +10,7 @@ from tqdm import tqdm
 import getdata
 from adaptive import AdaptiveLogSoftmaxWithLoss
 import model
-from mymodel import LSTM_With_H_Detach
+from mymodel import LSTM_With_H_Detach,lstmmodel
 from utils import batchify, get_batch, repackage_hidden
 
 parser = argparse.ArgumentParser(description='PyTorch PennTreeBank RNN/LSTM Language Model')
@@ -120,7 +120,7 @@ from splitcross import SplitCrossEntropyLoss
 criterion = None
 
 ntokens,emsize = train_data.vocab_obj.size()
-model = LSTM_With_H_Detach(emsize,args.nhid,args.nlayers,ntokens,train_data.vocab_obj) #model.RNNModel(train_data.vocab_obj,args.model, ntokens, emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
+model = lstmmodel(emsize,args.nhid,args.nlayers,ntokens,train_data.vocab_obj) #model.RNNModel(train_data.vocab_obj,args.model, ntokens, emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
 ###
 if args.resume:
     print('Resuming model ...')

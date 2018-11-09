@@ -53,9 +53,6 @@ class LSTM_With_H_Detach(nn.Module):
         probs=[]
         for i in range(x.size()[0]):
             curr_ip=x[i,:,:]
-
-
-
             temp_state_h=[]
             temp_state_c=[]
             for j in range(self.num_layers):
@@ -93,6 +90,35 @@ class LSTM_With_H_Detach(nn.Module):
     	c=[torch.zeros(batch_size,self.hidden_size).cuda() for _ in range(self.num_layers)]
     	state=[h,c]
     	return state
+
+class lstmmodel(nn.Module):
+	def __init__(self,input_size,hidden_size,num_layers,ntoken,vocab_obj):
+        super(LSTM_With_H_Detach,self).__init__()
+        self.input_size=input_size
+        self.hidden_size=hidden_size
+        self.num_layers=num_layers
+        self.ntoken=ntoken
+        self.encoder = nn.Embedding(ntoken, input_size)
+        embed_matrix_tensor=torch.from_numpy(vocab_obj.embed_matrix).cuda()
+        self.encoder.load_state_dict({'weight':embed_matrix_tensor})
+        self.lstm=nn.LSTM(self.input_size,self.hidden_size,self.num_layers,bidirectional=True)
+        #self.decoder=nn.Linear(self.hidden_size,ntoken)
+        #self.dist = torch.distributions.Bernoulli(torch.Tensor([0.25]))
+        #self.rnn_layers.append(LSTM_With_H_Detach_Cell(input_size,hidden_size).cuda())
+        #for i in range(num_layers-1):
+        #    self.rnn_layers.append(LSTM_With_H_Detach_Cell(hidden_size,hidden_size).cuda())
+    def  forward(self,x,state,eval):
+        h,c=[],[]
+        x=x.long().cuda()
+
+        x=self.encoder(x)
+        x=x.transpose(1,0)
+        hidden_size=self.init_hidden(x.size(1))
+        x,hidden_size=self.lstm(x,hidden_size)
+       	return x
+    
+    def init_hidden(self,batch_size):
+    	return (torch.zeros(2*self.num_layers,self.batch_size,self.hidden_size).cuda(),torch.zeros(2*self.num_layers,self.batch_size,self.hidden_size).cuda())
 
 if __name__=="__main__":
 	rnn=LSTM_With_H_Detach(12,16,3)
