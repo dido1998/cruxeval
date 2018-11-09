@@ -44,13 +44,18 @@ class LSTM_With_H_Detach(nn.Module):
 
         x=self.encoder(x)
         x=x.transpose(1,0)
-
+        h_tensor,c_tensor=[],[]
+           
+        h_tensor=[torch.zeros(x.size()[0],x.size()[1],self.hidden_size).cuda() for _ in range(self.num_layers)]
+        c_tensor=[torch.zeros(x.size()[0],x.size()[1],self.hidden_size).cuda() for _ in range(self.num_layers)]
         h.append(state[0])
         c.append(state[1])
         probs=[]
         for i in range(x.size()[0]):
             curr_ip=x[i,:,:]
-            
+
+
+
             temp_state_h=[]
             temp_state_c=[]
             for j in range(self.num_layers):
@@ -64,22 +69,22 @@ class LSTM_With_H_Detach(nn.Module):
                 else:
                     temp_state_h.append(h_t)
                 temp_state_c.append(c_t)
+                h_tensor[j][i,:,:]=temp_state_h[-1]
+                c_tensor[j][i,:,:]=temp_state_c[-1]
             #probs.append(self.decoder(temp_state_h[-1]))
             if eval==1:
             	if i+1<x.size(0):
             		x[i+1,0,:]=self.encoder(torch.argmax(probs[i].view(-1)).view(1,1))
             h.append(temp_state_h)
             c.append(temp_state_c)
-        h_tensor,c_tensor=[],[]
-        for i in range(self.num_layers):
-            h_tensor.append(torch.zeros(x.size()[0],x.size()[1],self.hidden_size).cuda())
-            c_tensor.append(torch.zeros(x.size()[0],x.size()[1],self.hidden_size).cuda())
+        
+        
         #out=torch.zeros(len(h)-1,x.size(1),self.ntoken).cuda()
-        for i in range(len(h)-1):
+        """for i in range(len(h)-1):
         	#out[i,:,:]=probs[i]
         	for j in range(self.num_layers):
         		h_tensor[j][i,:,:]=h[i+1][j]
-        		c_tensor[j][i,:,:]=c[i+1][j]
+        		c_tensor[j][i,:,:]=c[i+1][j]"""
 
         return h_tensor,c_tensor,None
     
@@ -88,6 +93,7 @@ class LSTM_With_H_Detach(nn.Module):
     	c=[torch.zeros(batch_size,self.hidden_size).cuda() for _ in range(self.num_layers)]
     	state=[h,c]
     	return state
+
 if __name__=="__main__":
 	rnn=LSTM_With_H_Detach(12,16,3)
 	h=[torch.zeros(2,16),torch.zeros(2,16),torch.zeros(2,16)]
