@@ -231,10 +231,12 @@ def train():
         #print(output.size())
         out=out.view(-1,args.nhid)
         #out = out.view(-1, out.size(2))
-       
+        print(out.size())
+
         #targets=targets.transpose(1,0)
         #print(targets.size())
         targets=targets.view(targets.size(0)*targets.size(1))
+        print(targets.size())
         check=''
         cntzero=0
         """for k in range(targets.size()[0]):
