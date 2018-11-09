@@ -101,7 +101,7 @@ class lstmmodel(nn.Module):
 		self.encoder = nn.Embedding(ntoken, input_size)
 		embed_matrix_tensor=torch.from_numpy(vocab_obj.embed_matrix).cuda()
 		self.encoder.load_state_dict({'weight':embed_matrix_tensor})
-		self.lstm=nn.LSTM(self.input_size,self.hidden_size/2,self.num_layers,bidirectional=True)
+		self.lstm=nn.LSTM(self.input_size,int(self.hidden_size/2),self.num_layers,bidirectional=True)
 		#self.decoder=nn.Linear(self.hidden_size,ntoken)
 		#self.dist = torch.distributions.Bernoulli(torch.Tensor([0.25]))
 		#self.rnn_layers.append(LSTM_With_H_Detach_Cell(input_size,hidden_size).cuda())
