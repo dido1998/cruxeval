@@ -192,7 +192,7 @@ def evaluate():
         output,model.hidden = model(starttensor)
         output=output.view(-1,output.size()[2])
         preds=criterion.predict(output)
-        print(preds)
+        #print(preds)
         for i in range(args.batch_size):
             starttensor[i,0]=preds[i]
         sent+=train_data.vocab_obj.id2word(preds[0].item())+' '
