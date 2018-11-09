@@ -120,7 +120,7 @@ from splitcross import SplitCrossEntropyLoss
 criterion = None
 
 ntokens,emsize = train_data.vocab_obj.size()
-model = LSTM_With_H_Detach(emsize,args.nhid,args.nlayers) #model.RNNModel(train_data.vocab_obj,args.model, ntokens, emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
+model = LSTM_With_H_Detach(emsize,args.nhid,args.nlayers,args.ntokens) #model.RNNModel(train_data.vocab_obj,args.model, ntokens, emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
 ###
 if args.resume:
     print('Resuming model ...')
