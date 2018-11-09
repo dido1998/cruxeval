@@ -118,7 +118,7 @@ class lstmmodel(nn.Module):
 		return x
     
 	def init_hidden(self,batch_size):
-		return (torch.zeros(2*self.num_layers,self.batch_size,self.hidden_size).cuda(),torch.zeros(2*self.num_layers,self.batch_size,self.hidden_size).cuda())
+		return (torch.zeros(2*self.num_layers,batch_size,self.hidden_size).cuda(),torch.zeros(2*self.num_layers,batch_size,self.hidden_size).cuda())
 
 if __name__=="__main__":
 	rnn=LSTM_With_H_Detach(12,16,3)
