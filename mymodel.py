@@ -73,7 +73,7 @@ class LSTM_With_H_Detach(nn.Module):
         for i in range(self.num_layers):
             h_tensor.append(torch.zeros(x.size()[0],x.size()[1],self.hidden_size).cuda())
             c_tensor.append(torch.zeros(x.size()[0],x.size()[1],self.hidden_size).cuda())
-        out=torch.zeros(len(h)-1,probs[0].size(1),probs.size(2)).cuda()
+        out=torch.zeros(len(h)-1,probs[0].size(1),probs[0].size(2)).cuda()
         for i in range(len(h)-1):
         	out[i,:,:]=probs[i]
         	for j in range(self.num_layers):
