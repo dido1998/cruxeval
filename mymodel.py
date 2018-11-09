@@ -115,7 +115,7 @@ class lstmmodel(nn.Module):
 		x=self.encoder(x)
 		x=x.transpose(1,0)
 		
-		x,hidden_size=self.lstm(x,hidden_size)
+		x,hidden_size=self.lstm(x,self.hidden)
 		return x,hidden_size
     
 	def init_hidden(self,batch_size):
