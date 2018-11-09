@@ -146,7 +146,7 @@ if not criterion:
     print('Using', splits)
     
     
-    criterion=nn.CrossEntropyLoss()
+    criterion=AdaptiveLogSoftmaxWithLoss(args.nhid,ntokens,splits)
     #criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
 ###
 if args.cuda:
@@ -247,7 +247,7 @@ def train():
         
         raw_loss = criterion(out,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
         #preds=raw_loss[0]
-        loss = raw_loss
+        loss = raw_loss[1]
         # Activiation Regularization
         if args.alpha: loss = loss + sum(args.alpha * dropped_rnn_h.pow(2).mean() for dropped_rnn_h in dropped_rnn_hs[-1:])
         # Temporal Activation Regularization (slowness)
