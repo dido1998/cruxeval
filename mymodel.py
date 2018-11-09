@@ -39,6 +39,8 @@ class LSTM_With_H_Detach(nn.Module):
             self.rnn_layers.append(LSTM_With_H_Detach_Cell(hidden_size,hidden_size))
     def  forward(self,x,state,eval):
         h,c=[],[]
+        x=x.long().cuda()
+
         x=self.encoder(x)
         x=x.transpose(1,0)
 
@@ -68,9 +70,9 @@ class LSTM_With_H_Detach(nn.Module):
             c.append(temp_state_c)
         h_tensor,c_tensor=[],[]
         for i in range(self.num_layers):
-            h_tensor.append(torch.zeros(x.size()[0],x.size()[1],self.hidden_size))
-            c_tensor.append(torch.zeros(x.size()[0],x.size()[1],self.hidden_size))
-        out=torch.zeros(len(h)-1,probs[0].size(1),probs.size(2))
+            h_tensor.append(torch.zeros(x.size()[0],x.size()[1],self.hidden_size).cuda())
+            c_tensor.append(torch.zeros(x.size()[0],x.size()[1],self.hidden_size).cuda())
+        out=torch.zeros(len(h)-1,probs[0].size(1),probs.size(2)).cuda()
         for i in range(len(h)-1):
         	out[i,:,:]=probs[i]
         	for j in range(self.num_layers):
@@ -80,8 +82,8 @@ class LSTM_With_H_Detach(nn.Module):
         return h_tensor,c_tensor,out
     
     def init_hidden(self,batch_size):
-    	h=[torch.zeros(batch_size,self.hidden_size) for _ in range(self.num_layers)]
-    	c=[torch.zeros(batch_size,self.hidden_size) for _ in range(self.num_layers)]
+    	h=[torch.zeros(batch_size,self.hidden_size).cuda() for _ in range(self.num_layers)]
+    	c=[torch.zeros(batch_size,self.hidden_size).cuda() for _ in range(self.num_layers)]
     	state=[h,c]
     	return state
 if __name__=="__main__":
