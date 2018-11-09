@@ -251,6 +251,7 @@ def train():
         
         raw_loss = criterion(out,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
         #preds=raw_loss[0]
+        print(raw_loss[0])
         loss = raw_loss[1]
         # Activiation Regularization
         if args.alpha: loss = loss + sum(args.alpha * dropped_rnn_h.pow(2).mean() for dropped_rnn_h in dropped_rnn_hs[-1:])
