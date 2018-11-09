@@ -55,7 +55,8 @@ class LSTM_With_H_Detach(nn.Module):
             for j in range(self.num_layers):
                 h_t_i,c_t_i=h[i][j],c[i][j]
 
-                c_t,h_t=F.relu(self.rnn_layers[j](curr_ip,(h_t_i,c_t_i)))
+                c_t,h_t=self.rnn_layers[j](curr_ip,(h_t_i,c_t_i))
+                h_t=F.relu(h_t)
                 curr_ip=h_t
                 if self.dist.sample()==1:
                     temp_state_h.append(h_t.detach())
