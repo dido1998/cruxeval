@@ -229,7 +229,8 @@ def train():
 
         h,c,out=model(data,hidden,0)
         #print(output.size())
-        out = out.view(-1, out.size(2))
+        out=h[-1].view(-1,args.nhid)
+        #out = out.view(-1, out.size(2))
        
         #targets=targets.transpose(1,0)
         #print(targets.size())
