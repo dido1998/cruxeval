@@ -23,7 +23,7 @@ class LSTM_With_H_Detach_Cell(nn.Module):
         return c,h
 
 class LSTM_With_H_Detach(nn.Module):
-    def __init__(self,input_size,hidden_size,num_layers,ntoken):
+    def __init__(self,input_size,hidden_size,num_layers,ntoken,vocab_obj):
         super(LSTM_With_H_Detach,self).__init__()
         self.input_size=input_size
         self.hidden_size=hidden_size
