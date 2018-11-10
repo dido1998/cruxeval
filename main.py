@@ -250,16 +250,16 @@ def train():
         if batch % args.loginterval == 0 and batch > 0:
             cur_loss = total_loss.item() / args.loginterval
             elapsed = time.time() - start_time
-            print(total_loss)
+            #print(total_loss)
             #evaluate()
             torch.save(model.state_dict(), '/content/drive/My Drive/lngmodeladaptiveloss')
             torch.save(criterion.state_dict(), '/content/drive/My Drive/criterionadaptive')
             model.eval(150)
             
             print('| epoch {:3d} | {:5f}/{:5f} batches  | '
-                    'loss {:5.2f} | ppl {:8.2f} | bpc {:8.3f}'.format(
+                    'loss {:5.2f}  | bpc {:8.3f}'.format(
                 epoch, batch,
-                elapsed * 1000 / args.loginterval, cur_loss, math.exp(cur_loss), cur_loss / math.log(2)))
+                elapsed * 1000 / args.loginterval, cur_loss, cur_loss / math.log(2)))
             total_loss = 0
             start_time = time.time()
             #preds=criterion.predict(output)

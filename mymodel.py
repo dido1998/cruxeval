@@ -108,7 +108,7 @@ class LSTM_With_H_Detach(nn.Module):
 
             output, (h, c) = self.model(ip[0,:,:], (h, c))
             preds=self.criterion.predict(output)
-            sent+=self.vocab_obj.id2word(preds[0].item())
+            sent+=self.vocab_obj.id2word(preds[0].item())+' '
             start=preds.view(1,1)
         print(sent)
     def init_hidden(self,batch_size):
