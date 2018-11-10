@@ -35,7 +35,7 @@ class LSTM(nn.Module):
 
 		return h_t, (h_t, c_t)                                        
 class LSTM_With_H_Detach(nn.Module):
-    def __init__(self,input_size,hidden_size,ntoken,vocab_obj,p_detach,splits):
+    def __init__(self,input_size,hidden_size,ntoken,vocab_obj,p_detach,criterion):
         super(LSTM_With_H_Detach,self).__init__()
         self.input_size=input_size
         self.hidden_size=hidden_size
@@ -45,7 +45,7 @@ class LSTM_With_H_Detach(nn.Module):
         self.encoder.load_state_dict({'weight':embed_matrix_tensor})
         self.p_detach=p_detach
         self.model=LSTM(self.input_size,self.hidden_size).cuda()
-        self.criterion=AdaptiveLogSoftmaxWithLoss(self.hidden_size,self.ntoken,splits).cuda()
+        self.criterion=criterion.cuda()
     def  forward(self,x,targets):
         h,c=[],[]
         x=x.long().cuda()

@@ -144,7 +144,8 @@ if not criterion:
         # WikiText-103
         splits = [2800, 20000, 76000]
     print('Using', splits)
-model = LSTM_With_H_Detach(emsize,args.nhid,ntokens,train_data.vocab_obj,0.25,splits)    
+    criterion=AdaptiveLogSoftmaxWithLoss(args.nhid,ntokens,splits)
+model = LSTM_With_H_Detach(emsize,args.nhid,ntokens,train_data.vocab_obj,0.25,criterion)    
     
 #criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
 ###
