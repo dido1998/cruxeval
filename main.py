@@ -181,22 +181,6 @@ print('Model total parameters:', total_params)
 #model.load_state_dict(torch.load('/content/lngmodeladaptiveloss'))
 
 
-def evaluate():
-    startword=34
-    starttensor=torch.zeros(args.batch_size,1)
-    for i in range(args.batch_size):
-        starttensor[i,0]=train_data.vocab_obj.word2id(startword)
-    model.hidden = model.init_hidden(args.batch_size)
-    sent=''
-    for i in range(100):
-        output,model.hidden = model(starttensor)
-        output=output.view(-1,output.size()[2])
-        preds=criterion.predict(output)
-        #print(preds)
-        for i in range(args.batch_size):
-            starttensor[i,0]=preds[i]
-        sent+=train_data.vocab_obj.id2word(preds[0].item())+' '
-    print(sent)
 
 def train():
     # Turn on training mode which enables dropout.
@@ -266,11 +250,11 @@ def train():
         if batch % args.loginterval == 0 and batch > 0:
             cur_loss = total_loss.item() / args.loginterval
             elapsed = time.time() - start_time
-            print(raw_loss[0])
-
+            print(total_loss[0])
+            evaluate()
             torch.save(model.state_dict(), '/content/drive/My Drive/lngmodeladaptiveloss')
             torch.save(criterion.state_dict(), '/content/drive/My Drive/criterionadaptive')
-            evaluate()
+            model.eval(150)
             
             print('| epoch {:3d} | {:5f}/{:5f} batches  | '
                     'loss {:5.2f} | ppl {:8.2f} | bpc {:8.3f}'.format(

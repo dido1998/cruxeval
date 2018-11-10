@@ -95,7 +95,19 @@ class LSTM_With_H_Detach(nn.Module):
         		c_tensor[j][i,:,:]=c[i+1][j]"""
 
         return output,(h,c),loss
-    
+    def eval(self,seqlen):
+    	start=np.random.choice(self.ntoken,1)
+    	start=torch.from_numpy(start).view(1,1)
+    	h = torch.zeros(1, self.hidden_size).cuda()
+        c = torch.zeros(1, self.hidden_size).cuda()
+    	sent=''
+    	for i in range(seqlen):
+    		ip=self.encoder(start)
+    		output, (h, c) = self.model(ip, (h, c))
+    		preds=self.criterion.predict(output)
+    		sent+=self.vocab_obj.id2word(preds[0].item())
+    		start=preds.view(1,1)
+    	print(sent)
     def init_hidden(self,batch_size):
     	h=[torch.zeros(batch_size,self.hidden_size).cuda() for _ in range(self.num_layers)]
     	c=[torch.zeros(batch_size,self.hidden_size).cuda() for _ in range(self.num_layers)]
