@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import math
 from adaptive import AdaptiveLogSoftmaxWithLoss
-
+import numpy as np
 class LSTM(nn.Module):
 	def __init__(self, inp_size, hidden_size):
 		super().__init__()
