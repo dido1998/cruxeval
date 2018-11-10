@@ -96,14 +96,14 @@ class LSTM_With_H_Detach(nn.Module):
 
         return output,(h,c),loss
     def eval(self,seqlen):
-    	start=np.random.choice(self.ntoken,1)
+		start=np.random.choice(self.ntoken,1)
 		start=torch.from_numpy(start).view(1,1)
 		h = torch.zeros(1, self.hidden_size).cuda()
 		c = torch.zeros(1, self.hidden_size).cuda()
 		sent=''
 		for i in range(seqlen):
 			ip=self.encoder(start)
-			
+
 			output, (h, c) = self.model(ip, (h, c))
 			preds=self.criterion.predict(output)
 			sent+=self.vocab_obj.id2word(preds[0].item())
