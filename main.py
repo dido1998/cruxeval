@@ -120,7 +120,7 @@ from splitcross import SplitCrossEntropyLoss
 criterion = None
 
 ntokens,emsize = train_data.vocab_obj.size()
-model = lstmmodel(emsize,args.nhid,args.nlayers,ntokens,train_data.vocab_obj) #model.RNNModel(train_data.vocab_obj,args.model, ntokens, emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
+model = LSTM_With_H_Detach(emsize,args.nhid,ntokens,train_data.vocab_obj,0.25) #model.RNNModel(train_data.vocab_obj,args.model, ntokens, emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
 ###
 if args.resume:
     print('Resuming model ...')
@@ -225,7 +225,6 @@ def train():
         targets=targets.cuda()
         # Starting each batch, we detach the hidden state from how it was previously produced.
         # If we didn't, the model would try backpropagating all the way to start of the dataset.
-        model.hidden = model.init_hidden(args.batch_size)
         optimizer.zero_grad()
 
         out,_=model(data)
