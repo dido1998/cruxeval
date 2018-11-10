@@ -28,13 +28,13 @@ class instanceloader(Dataset):
            
             
             #print('-----------------')
-            #if len(cur_para.split())<300:
-            self.modelling_data.append(cur_para)
-            self.actual_data.append([cur_para,cur_sent,1])
-            if len(cur_sent.split())>self.max_summ:
-                self.max_summ=len(cur_sent.split())
-            if len(cur_para.split())>self.max_para:
-                self.max_para=len(cur_para.split())
+            if len(cur_para.split())<300:
+                self.modelling_data.append(cur_para)
+                self.actual_data.append([cur_para,cur_sent,1])
+                if len(cur_sent.split())>self.max_summ:
+                    self.max_summ=len(cur_sent.split())
+                if len(cur_para.split())>self.max_para:
+                    self.max_para=len(cur_para.split())
             """self.NPI+=1
             
             self.actual_data.append([cur_para,cur_sent,1])
