@@ -120,7 +120,7 @@ from splitcross import SplitCrossEntropyLoss
 criterion = None
 
 ntokens,emsize = train_data.vocab_obj.size()
-model = LSTM_With_H_Detach(emsize,args.nhid,ntokens,train_data.vocab_obj,0.25) #model.RNNModel(train_data.vocab_obj,args.model, ntokens, emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
+#model.RNNModel(train_data.vocab_obj,args.model, ntokens, emsize, args.nhid, args.nlayers, args.dropout, args.dropouth, args.dropouti, args.dropoute, args.wdrop, args.tied)
 ###
 if args.resume:
     print('Resuming model ...')
@@ -144,14 +144,13 @@ if not criterion:
         # WikiText-103
         splits = [2800, 20000, 76000]
     print('Using', splits)
+model = LSTM_With_H_Detach(emsize,args.nhid,ntokens,train_data.vocab_obj,0.25,splits)    
     
-    
-    criterion=AdaptiveLogSoftmaxWithLoss(args.nhid,ntokens,splits)
-    #criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
+#criterion = SplitCrossEntropyLoss(args.emsize,train_data.vocab_obj, splits=splits, verbose=False)
 ###
 if args.cuda:
     model = model.cuda()
-    criterion = criterion.cuda()
+    #criterion = criterion.cuda()
 ###
 params = list(model.parameters()) + list(criterion.parameters())
 total_params = sum(x.size()[0] * x.size()[1] if len(x.size()) > 1 else x.size()[0] for x in params if x.size())
@@ -204,7 +203,7 @@ def train():
     total_loss = 0
     start_time = time.time()
     ntokens = train_data.vocab_obj.size()[0]
-    hidden = model.init_hidden(args.batch_size)
+    
     batch, i = 0, 0
     
 
@@ -227,18 +226,18 @@ def train():
         # If we didn't, the model would try backpropagating all the way to start of the dataset.
         optimizer.zero_grad()
 
-        out,_=model(data)
+        out,_,loss=model(data,targets)
         #print(output.size())
-        out=out.view(-1,args.nhid)
+        
         #out = out.view(-1, out.size(2))
         
 
         #targets=targets.transpose(1,0)
         #print(targets.size())
-        targets=targets.view(targets.size(0)*targets.size(1))
+        #targets=targets.view(targets.size(0)*targets.size(1))
         
-        check=''
-        cntzero=0
+        #check=''
+        #cntzero=0
         """for k in range(targets.size()[0]):
             #if targets[k].item()==0:
             #    cntzero+=1
@@ -246,22 +245,22 @@ def train():
         print(check) """
         #print(cntzero)
         #print(targets.size()[0])
-        t1=''
+        #t1=''
         
-        raw_loss = criterion(out,targets) #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
+        #criterion(model.decoder.weight, model.decoder.bias, output, targets,i)
         #preds=raw_loss[0]
-        loss = raw_loss[1]
+        
         # Activiation Regularization
-        if args.alpha: loss = loss + sum(args.alpha * dropped_rnn_h.pow(2).mean() for dropped_rnn_h in dropped_rnn_hs[-1:])
+        #if args.alpha: loss = loss + sum(args.alpha * dropped_rnn_h.pow(2).mean() for dropped_rnn_h in dropped_rnn_hs[-1:])
         # Temporal Activation Regularization (slowness)
-        if args.beta: loss = loss + sum(args.beta * (rnn_h[1:] - rnn_h[:-1]).pow(2).mean() for rnn_h in rnn_hs[-1:])
-        loss.backward()
+        #if args.beta: loss = loss + sum(args.beta * (rnn_h[1:] - rnn_h[:-1]).pow(2).mean() for rnn_h in rnn_hs[-1:])
+        #loss.backward()
 
         # `clip_grad_norm` helps prevent the exploding gradient problem in RNNs / LSTMs.
         if args.clip: torch.nn.utils.clip_grad_norm_(params, args.clip)
         optimizer.step()
 
-        total_loss += raw_loss[1].data
+        total_loss += loss.data
         optimizer.param_groups[0]['lr'] = lr2
         if batch % args.loginterval == 0 and batch > 0:
             cur_loss = total_loss.item() / args.loginterval

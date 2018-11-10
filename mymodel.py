@@ -31,9 +31,9 @@ class LSTM(nn.Module):
 		c_t = torch.mul(c, f_t) + torch.mul(i_t, g_t)
 		h_t = torch.mul(o_t, c_t.tanh())
 
-		return h_t, (h_t, c_t)dcdc   v                                        
+		return h_t, (h_t, c_t)                                        
 class LSTM_With_H_Detach(nn.Module):
-    def __init__(self,input_size,hidden_size,ntoken,vocab_obj,p_detach):
+    def __init__(self,input_size,hidden_size,ntoken,vocab_obj,p_detach,splits):
         super(LSTM_With_H_Detach,self).__init__()
         self.input_size=input_size
         self.hidden_size=hidden_size
@@ -42,8 +42,9 @@ class LSTM_With_H_Detach(nn.Module):
         embed_matrix_tensor=torch.from_numpy(vocab_obj.embed_matrix).cuda()
         self.encoder.load_state_dict({'weight':embed_matrix_tensor})
 		self.p_detach=p_detach
-        self.model=LSTM(self.input_size,self.hidden_size)
-    def  forward(self,x,state,eval):
+        self.model=LSTM(self.input_size,self.hidden_size).cuda()
+        self.criterion=AdaptiveLogSoftmaxWithLoss(self.hidden_size,self.ntoken,splits).cuda()
+    def  forward(self,x,targets):
         h,c=[],[]
         x=x.long().cuda()
 
@@ -52,14 +53,16 @@ class LSTM_With_H_Detach(nn.Module):
            
         h = torch.zeros(batch_size, hid_size).cuda()
         c = torch.zeros(batch_size, hid_size).cuda()
-        
+        loss=0
         for i in range(sq_len):
-				if self.p_detach>0:
-					p_detach = args.p_detach	
-					rand_val = np.random.random(size=1)[0]
-					if rand_val <= p_detach:
-						h = h.detach()
-				output, (h, c) = self.model(inp_x[i], (h, c))
+			if self.p_detach>0:
+				p_detach = args.p_detach	
+				rand_val = np.random.random(size=1)[0]
+				if rand_val <= p_detach:
+					h = h.detach()
+			output, (h, c) = self.model(inp_x[i], (h, c))
+			loss+=self.criterion(output,targets[i,:])
+		loss.backward()
 
         """for i in range(x.size()[0]):
             curr_ip=x[i,:,:]
@@ -89,7 +92,7 @@ class LSTM_With_H_Detach(nn.Module):
         		h_tensor[j][i,:,:]=h[i+1][j]
         		c_tensor[j][i,:,:]=c[i+1][j]"""
 
-        return output,(h,c)
+        return output,(h,c),loss
     
     def init_hidden(self,batch_size):
     	h=[torch.zeros(batch_size,self.hidden_size).cuda() for _ in range(self.num_layers)]
