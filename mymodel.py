@@ -53,12 +53,12 @@ class LSTM_With_H_Detach(nn.Module):
         x=self.encoder(x)
         x=x.transpose(1,0)
            
-        h = torch.zeros(batch_size, hid_size).cuda()
-        c = torch.zeros(batch_size, hid_size).cuda()
+        h = torch.zeros(x.size(1), self.hidden_size).cuda()
+        c = torch.zeros(x.size(1), self.hidden_size).cuda()
         loss=0
-        for i in range(sq_len):
+        for i in range(x.size(0)):
         	if self.p_detach>0:
-        		p_detach = args.p_detach	
+        		p_detach = self.p_detach	
         		rand_val = np.random.random(size=1)[0]
         		if rand_val <= p_detach:
         			h = h.detach()
