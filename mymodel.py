@@ -41,7 +41,7 @@ class LSTM_With_H_Detach(nn.Module):
         self.encoder = nn.Embedding(ntoken, input_size)
         embed_matrix_tensor=torch.from_numpy(vocab_obj.embed_matrix).cuda()
         self.encoder.load_state_dict({'weight':embed_matrix_tensor})
-		self.p_detach=p_detach
+        self.p_detach=p_detach
         self.model=LSTM(self.input_size,self.hidden_size).cuda()
         self.criterion=AdaptiveLogSoftmaxWithLoss(self.hidden_size,self.ntoken,splits).cuda()
     def  forward(self,x,targets):
@@ -55,14 +55,14 @@ class LSTM_With_H_Detach(nn.Module):
         c = torch.zeros(batch_size, hid_size).cuda()
         loss=0
         for i in range(sq_len):
-			if self.p_detach>0:
-				p_detach = args.p_detach	
-				rand_val = np.random.random(size=1)[0]
-				if rand_val <= p_detach:
-					h = h.detach()
-			output, (h, c) = self.model(inp_x[i], (h, c))
-			loss+=self.criterion(output,targets[i,:])
-		loss.backward()
+        	if self.p_detach>0:
+        		p_detach = args.p_detach	
+        		rand_val = np.random.random(size=1)[0]
+            	if rand_val <= p_detach:
+        		h = h.detach()
+        	output, (h, c) = self.model(inp_x[i], (h, c))
+        	loss+=self.criterion(output,targets[i,:])
+        loss.backward()
 
         """for i in range(x.size()[0]):
             curr_ip=x[i,:,:]
