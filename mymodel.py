@@ -63,7 +63,7 @@ class LSTM_With_H_Detach(nn.Module):
         		if rand_val <= p_detach:
         			h = h.detach()
         	output, (h, c) = self.model(x[i,:,:], (h, c))
-        	loss+=self.criterion(output,targets[i,:])
+        	loss+=self.criterion(output,targets[i,:])[1]
         loss.backward()
 
         """for i in range(x.size()[0]):
