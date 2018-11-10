@@ -250,7 +250,7 @@ def train():
         if batch % args.loginterval == 0 and batch > 0:
             cur_loss = total_loss.item() / args.loginterval
             elapsed = time.time() - start_time
-            print(total_loss[0])
+            print(total_loss)
             evaluate()
             torch.save(model.state_dict(), '/content/drive/My Drive/lngmodeladaptiveloss')
             torch.save(criterion.state_dict(), '/content/drive/My Drive/criterionadaptive')
