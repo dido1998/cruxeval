@@ -105,7 +105,7 @@ class LSTM_With_H_Detach(nn.Module):
         for i in range(seqlen):
             ip=self.encoder(start)
 
-            output, (h, c) = self.model(ip, (h, c))
+            output, (h, c) = self.model(ip[0,:,:], (h, c))
             preds=self.criterion.predict(output)
             sent+=self.vocab_obj.id2word(preds[0].item())
             start=preds.view(1,1)
