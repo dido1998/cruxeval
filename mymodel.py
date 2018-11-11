@@ -65,6 +65,7 @@ class LSTM_With_H_Detach(nn.Module):
         			h = h.detach()
         	output, (h, c) = self.model(x[i,:,:], (h, c))
         	loss+=self.criterion(output,targets[i,:])[1]
+        loss=loss/x.size(0)
         loss.backward()
 
         """for i in range(x.size()[0]):
