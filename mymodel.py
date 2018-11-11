@@ -100,7 +100,7 @@ class LSTM_With_H_Detach(nn.Module):
     
     def eval(self,seqlen):
         start=self.vocab_obj.word2id('cnn')
-        start=torch.from_numpy(start).view(1,1).cuda()
+        start=torch.from_numpy(np.array([start])).view(1,1).cuda()
         h = torch.zeros(1, self.hidden_size).cuda()
         c = torch.zeros(1, self.hidden_size).cuda()
         sent=''
